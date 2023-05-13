@@ -1,0 +1,120 @@
+[
+    {
+        "id": 1,
+        "title": "prod1",
+        "description": "Description of prod 1",
+        "price": 23,
+        "thumbnail": "thumbnail",
+        "code": "PR001",
+        "stock": 50
+    },
+    {
+        "id": 2,
+        "title": "prod2",
+        "description": "Description of prod 2",
+        "price": 23,
+        "thumbnail": "thumbnail",
+        "code": "PR002",
+        "stock": 50
+    },
+    {
+        "id": 3,
+        "title": "prod3",
+        "description": "Description of prod 3",
+        "price": 23,
+        "thumbnail": "thumbnail",
+        "code": "PR003",
+        "stock": 50
+    },
+    {
+        "id": 4,
+        "title": "prod4",
+        "description": "Description of prod 4",
+        "price": 23,
+        "thumbnail": "thumbnail",
+        "code": "PR003",
+        "stock": 50
+    },
+    {
+        "id": 5,
+        "title": "prod5",
+        "description": "Description of prod 5",
+        "price": 23,
+        "thumbnail": "thumbnail",
+        "code": "PR003",
+        "stock": 50
+    },
+    {
+        "id": 6,
+        "title": "prod6",
+        "description": "Description of prod 6",
+        "price": 23,
+        "thumbnail": "thumbnail",
+        "code": "PR003",
+        "stock": 50
+    },
+    {
+        "id": 7,
+        "title": "prod7",
+        "description": "Description of prod 7",
+        "price": 23,
+        "thumbnail": "thumbnail",
+        "code": "PR003",
+        "stock": 50
+    },
+    {
+        "id": 8,
+        "title": "prod8",
+        "description": "Description of prod 8",
+        "price": 23,
+        "thumbnail": "thumbnail",
+        "code": "PR003",
+        "stock": 50
+    },
+    {
+        "id": 9,
+        "title": "prod9",
+        "description": "Description of prod 9",
+        "price": 23,
+        "thumbnail": "thumbnail",
+        "code": "PR003",
+        "stock": 50
+    },
+    {
+        "id": 10,
+        "title": "prod10",
+        "description": "Description of prod 10",
+        "price": 23,
+        "thumbnail": "thumbnail",
+        "code": "PR003",
+        "stock": 50
+    },
+    {
+        "id": 11,
+        "title": "prod11",
+        "description": "Description of prod 11",
+        "price": 23,
+        "thumbnail": "thumbnail",
+        "code": "PR003",
+        "stock": 50
+    },
+    {
+        "id": 12,
+        "title": "prod12",
+        "description": "Description of prod 12",
+        "price": 23,
+        "thumbnail": "thumbnail",
+        "code": "PR003",
+        "stock": 50
+    },
+    {
+        "id": "c5ebf6ef-a16c-49c2-bf75-3c545b647546",
+        "title": "newTitle",
+        "description": "product 13",
+        "code": "PR012",
+        "price": 33,
+        "status": true,
+        "stock": 50,
+        "category": "pizzas"
+    }
+]
