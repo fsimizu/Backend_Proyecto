@@ -15,7 +15,7 @@
         "price": 23,
         "thumbnail": "thumbnail",
         "code": "PR002",
-        "stock": 50
+        "stock": 45
     },
     {
         "id": 3,
@@ -24,7 +24,7 @@
         "price": 23,
         "thumbnail": "thumbnail",
         "code": "PR003",
-        "stock": 50
+        "stock": 40
     },
     {
         "id": 4,
@@ -115,6 +115,16 @@
         "price": 33,
         "status": true,
         "stock": 50,
+        "category": "pizzas"
+    },
+    {
+        "id": "bab09934-9694-4567-a8f6-b91072f4b5b0",
+        "title": "newTitl14",
+        "description": "product 14",
+        "code": "PR014",
+        "price": 35,
+        "status": true,
+        "stock": 40,
         "category": "pizzas"
     }
 ]
