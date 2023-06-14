@@ -13,11 +13,11 @@ class UserService {
     };
 
     async createUsers({ firstName, lastName, email }) {
-        return UserModel.create({ firstName, lastName, email }
+        return await UserModel.create({ firstName, lastName, email }
         );
     };
 
-    async updateUsers ( {_id, firstName, lastName, email} ) {
+    async updateUsers ( { _id, firstName, lastName, email } ) {
         return await UserModel.updateOne(
             { _id: _id },
             { firstName, lastName, email }
