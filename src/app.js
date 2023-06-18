@@ -7,6 +7,7 @@ import { chatRouter } from './routes/chat.router.js';
 import { productsApiRouter } from './routes/products.api.router.js';
 import { productsRouter } from './routes/products.router.js';
 import { usersApiRouter } from './routes/users.api.router.js';
+import { cartsRouter } from './routes/carts.router.js';
 import { connectMongo } from './utils/dbConnection.js';
 import { connectSocketServer } from './utils/socketServer.js';
 
@@ -20,7 +21,17 @@ app.use(express.urlencoded({extended: true}));
 app.use(express.static("public"))
 
 //para el handlebars
-app.engine("handlebars", handlebars.engine());
+// app.engine("handlebars", handlebars.engine());
+
+app.engine("handlebars", handlebars.engine({ 
+  defaultLayout: "main", 
+  runtimeOptions: {
+    allowProtoPropertiesByDefault: true,
+    allowProtoMethodsByDefault: true, 
+  },
+  })
+);
+
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "handlebars");
 
@@ -31,6 +42,7 @@ app.get('/', (_, res) => {
 app.use("/api/products", productsApiRouter)
 app.use("/api/carts", cartsApiRouter)
 app.use("/products", productsRouter)
+app.use("/carts", cartsRouter)
 
 app.use("/api/users", usersApiRouter)
 

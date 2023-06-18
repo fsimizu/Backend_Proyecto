@@ -1,0 +1,87 @@
+<section class="h-100 h-custom" style="background-color: #d2c9ff;">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12">
+            <div class="card card-registration card-registration-2" style="border-radius: 15px;">
+            <div class="card-body p-0">
+                <div class="row g-0">
+                <div class="col-lg-8">
+                    <div class="p-5">
+                    <div class="d-flex justify-content-between align-items-center mb-5">
+                        <h1 class="fw-bold mb-0 text-black">Shopping Cart</h1>
+                        <h6 class="mb-0 text-muted">{{totalItems}} items</h6>
+                    </div>
+                    <hr class="my-4">
+
+                    {{#each products}}
+                    <div class="row mb-4 d-flex justify-content-between align-items-center">
+                        <div class="col-md-2 col-lg-2 col-xl-2">
+                        <img src="{{this.product.thumbnail}}" class="img-fluid rounded-3">
+                        </div>
+                        <div class="col-md-3 col-lg-3 col-xl-3">
+                        <h6 class="text-muted">{{this.product.title}}</h6>
+                        <h6 class="text-black mb-0" style="white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">{{this.product.description}}</h6>
+                        </div>
+                        <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+                        {{!-- <button class="btn btn-link px-2" onclick="">
+                            <i class="fa fa-minus"></i>
+                        </button> --}}
+                        <div class="form-control form-control-sm">
+                            <h6 class="mb-0">{{this.quantity}}</h6>
+                        </div>
+                        {{!-- <input id="form1" min="0" name="quantity" value="{{this.quantity}}" type="number" class="form-control form-control-sm" /> --}}
+                        {{!-- <button class="btn btn-link px-2" onclick="">
+                            <i class="fa fa-plus"></i>
+                        </button> --}}
+                        </div>
+                        <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                        <h6 class="mb-0">ARS$ {{this.subtotal}}</h6>
+                        </div>
+                        <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                        <a href="#" class="text-muted" onclick="removeFromCart('{{this.product._id}}')"><i class="fa fa-times"></i></a>
+                        </div>
+                    </div>
+                    <hr class="my-4">
+                    {{/each}}
+    
+                    <div class="pt-5">
+                        <h6 class="mb-0">
+                            <a href="/products" class="text-body"><i class="fa fa-long-arrow-left me-2"></i>Back to shop</a>
+                        </h6>
+                    </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 bg-grey">
+                    <div class="p-5">
+                    <h3 class="fw-bold mb-5 mt-2 pt-1">Summary</h3>
+                    <hr class="my-4">
+    
+                    <div class="d-flex justify-content-between mb-4">
+                        <h5>Subtotal</h5>
+                        <h5>ARS$ {{totalPrice}}</h5>
+                    </div>
+                    <div class="d-flex justify-content-between mb-4">
+                        <h5>Free shipping</h5>
+                        <h5>ARS$ 0</h5>
+                    </div>
+    
+                    <hr class="my-4">
+    
+                    <div class="d-flex justify-content-between mb-5">
+                        <h5>Total</h5>
+                        <h5>ARS$ {{totalPrice}}</h5>
+                    </div>
+    
+                    <button type="button" id="buyNow" class="btn btn-dark btn-block btn-lg" data-mdb-ripple-color="dark" onclick="buyNow()">Buy now</button>
+    
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+</section>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/js/products.js"></script>

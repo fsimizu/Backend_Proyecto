@@ -1,0 +1,10 @@
+.products__container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 40px;
+}
+
+#cart_icon:hover {
+    cursor: pointer
+}

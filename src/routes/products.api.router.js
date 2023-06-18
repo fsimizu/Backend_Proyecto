@@ -4,15 +4,39 @@ export const productsApiRouter = express.Router();
 
 productsApiRouter.get('/', async (req, res) => {
   try{
-    const queryLimit = req.query.limit;
-    const products = await productService.getProducts({queryLimit});
-    let message;
-    message = queryLimit ? "limited list of products" : "complete list of products"
+    const { limit, sort, page, category, available } = req.query;
+    
+    const products = await productService.getProducts({limit, sort, page, category, available});
+    
+    const limitLink = limit ? "&limit="+limit : "";
+    const sortLink = sort ? "&sort="+sort : "";
+    const categoryLink = category ? "&category="+category : "";
+    const availableLink = available ? "&available="+available : "";
+
+    const prevLink = products.hasPrevPage ? "/api/products?page="+ products.prevPage + limitLink + sortLink + categoryLink + availableLink : "";
+    const nextLink = products.hasNextPage ? "/api/products?page="+ products.nextPage + limitLink + sortLink + categoryLink + availableLink : "";
+
+    if ( products.page > products.totalPages) {
+      return res.status(404).json({
+        status: "error",
+        msg: "Page not found",
+        payload: {},
+      });
+    }
 
     return res.status(200).json({
       status: "success",
-      msg: message,
-      payload: products,
+      message: "list of products",
+      payload: products.docs,
+      totalPages: products.totalPages,
+      prevPage: products.prevPage,
+      nextPage: products.nextPage,
+      page: products.page,
+      hasPrevPage: products.hasPrevPage,
+      hasNextPage: products.hasNextPage,
+      prevLink: prevLink,
+      nextLink: nextLink,
+
     });
   
   } catch (e) {
@@ -55,7 +79,6 @@ productsApiRouter.post('/', async (req, res) => {
         payload: {},
       });
   }
-
     const prodCreated = await productService.createProducts({title, description, price, thumbnail, code, stock, status});
     return res.status(201).json({
         status: "success",
@@ -124,5 +147,4 @@ productsApiRouter.put('/:pid', async (req, res) => {
       payload: {},
     });
   } 
-})
-
+});
