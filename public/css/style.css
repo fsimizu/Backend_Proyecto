@@ -8,3 +8,25 @@
 #cart_icon:hover {
     cursor: pointer
 }
+
+.home__form-container {
+    width: 500px;
+    border: 1px solid lightgray;
+    margin: auto;
+    padding: 40px;
+    border-radius: 5px;
+}
+
+.home__form-container .btn {
+    width: 100%;
+    height: 50px;
+    border-radius: 50px;
+}
+
+.home__form-container .form-group {
+    margin-bottom: 30px;
+}
+
+.home__form-container p {
+    text-align: center;
+}

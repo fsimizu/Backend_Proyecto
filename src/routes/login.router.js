@@ -38,19 +38,15 @@ loginRouter.post('/login', async (req, res) => {
     const { signInEmail: email, signInPassword: pass } = req.body;
     const user = await userService.getUserByEmail(email,pass);
 
-
     if (user.length === 1) {
         req.session.user = user[0];
         console.log(req.session)
         res.redirect("/products")
-        // res.send(JSON.stringify(req.session));
     }
     else {
         res.send("access denied")
     }
-
 })
-
 
 
 loginRouter.get('/register', (_, res) => {
@@ -72,7 +68,6 @@ loginRouter.post('/register', async (req, res) => {
         })
     }
 })
-
 
 loginRouter.get('/logout', (req, res) => {
     req.session.destroy((err) => {
