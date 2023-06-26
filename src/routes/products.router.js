@@ -19,11 +19,14 @@ productsRouter.get('/', async (req, res) => {
 
     const categories = await productService.getCategories();
 
+    //console.log(req.session.user); //devuelve undefined
+    const firstName = req.session.user ? req.session.user.firstName : "there";
+
     if ( productsPaginated.page > totalPages || (isNaN(page) && page != null) ) {
       return res.status(404).render('error-products');
     }
 
-    return res.status(201).render('products', { products , currentPage, totalPages, prevLink , nextLink, categories});
+    return res.status(201).render('products', { products , currentPage, totalPages, prevLink , nextLink, categories, firstName});
   
   } catch (error) {
     return res.status(500).render('error-products');

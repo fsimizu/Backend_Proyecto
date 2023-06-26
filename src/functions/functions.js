@@ -26,3 +26,13 @@ return new Promise((resolve, reject) => {
     });
 });
 }
+
+
+export function checkLogin(req, res, next) {
+
+  if (req.session.user) {
+    return next();
+  } else {
+    return res.status(401).send('Authorization error');
+  }
+}

@@ -12,8 +12,13 @@ class UserService {
         );
     };
 
-    async createUsers({ firstName, lastName, email }) {
-        return await UserModel.create({ firstName, lastName, email }
+    async getUserByEmail(email,pass) {
+        return await UserModel.find({email: email, pass: pass}
+        );
+    };
+
+    async createUsers({ firstName, lastName, email, pass }) {
+        return await UserModel.create({ firstName, lastName, email, pass }
         );
     };
 

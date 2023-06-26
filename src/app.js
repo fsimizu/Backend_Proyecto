@@ -8,13 +8,35 @@ import { productsApiRouter } from './routes/products.api.router.js';
 import { productsRouter } from './routes/products.router.js';
 import { usersApiRouter } from './routes/users.api.router.js';
 import { cartsRouter } from './routes/carts.router.js';
+import { loginRouter } from './routes/login.router.js';
 import { connectMongo } from './utils/dbConnection.js';
 import { connectSocketServer } from './utils/socketServer.js';
+import MongoStore from 'connect-mongo'
+
+import cookieParser from 'cookie-parser'
+
+import session from 'express-session';
+import FileStore from 'session-file-store';
 
 const app = express();
 const port = 8080;
+const fileStore = FileStore(session);
 
 connectMongo();
+// app.use(cookieParser());
+app.use(session({
+  secret: "ae5WE$gw4%HFg45w",
+  resave: true,
+  saveUninitialized: true,
+  // store: new fileStore({ path: __dirname + '/sessions', ttl: 100, retries: 0})
+  store: MongoStore.create({
+    mongoUrl: "mongodb+srv://fersimizu:ZogB7pClZEtkTnny@backend.yutifmg.mongodb.net/?retryWrites=true&w=majority",
+    mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
+    ttl: 15
+  })
+}))
+
+
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
@@ -35,7 +57,11 @@ app.engine("handlebars", handlebars.engine({
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "handlebars");
 
-app.get('/', (_, res) => {
+app.get('/', (req, res) => {
+
+  // const { registerEmail, registerPassword} = req.body;
+  // console.log(registerEmail, registerPassword);
+
   return res.status(201).render('home', {});
   });
 
@@ -48,8 +74,13 @@ app.use("/api/users", usersApiRouter)
 
 app.use("/chat", chatRouter)
 
+
 const httpServer = app.listen(port, () => {
     console.log(`Example app listening on port http://localhost:${port}`);
   })
 
 connectSocketServer(httpServer);
+
+
+
+app.use("/api/sessions", loginRouter)

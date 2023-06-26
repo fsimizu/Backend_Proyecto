@@ -1,88 +1,96 @@
 <section class="h-100 h-custom" style="background-color: #d2c9ff;">
   <div class="container py-5 h-100">
-      <div class="row d-flex justify-content-center align-items-center h-100">
-        <div class="col-12">
-          <div class="card card-registration card-registration-2" style="border-radius: 15px;">
-            <div class="card-body p-0">
-              <div class="row g-0">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-12">
+        <div class="card card-registration card-registration-2" style="border-radius: 15px;">
+          <div class="card-body p-0">
+            <div class="row g-0">
 
-                  <div class="p-5">
-                    <div class="d-flex justify-content-between align-items-center mb-5">
-                        <h1 class="fw-bold mb-0 text-black">List of products</h1>
-                        
-                        <a class="text-body" onclick="myCart()" id="cart_icon"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
-                          <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-                        </svg></a> 
-                    </div>
-                    
-                    {{!-- <h3 class="mb-0 text-black" id="category_title">Category</h3> --}}
-                    <div class="d-flex justify-content-between align-items-center mb-5">
-                      <h6>
-                        <label for="category_selection">Categories:</label>
-                        <select name="category_selection" id="category_selection">
-                          <option value="" selected disabled hidden>Select one</option>
-                          <option value="all">All</option>
-                          {{#each categories}}
-                          <option value="{{this}}">{{this}}</option>
-                          {{/each}}
-                        </select>
-                      </h6> 
-                      <h6> 
-                        <label for="availability_selection">Availability:</label>
-                        <select name="availability_selection" id="availability_selection">
-                          <option value="" selected disabled hidden>Select one</option>
-                          <option value="false">All</option>
-                          <option value="true">In stock</option>
-                        </select>
-                      </h6>
+              <div class="p-5">
+                <h1 class="fw-bold mb-0 text-black">Hi {{firstName}}!</h1>
+                <form action="/api/sessions/logout" method="get">
+                  <button type="submit" class="btn btn-primary">Logout</button>
+                </form>
+                <div class="d-flex justify-content-between align-items-center mb-5">
+                  <h2 class="fw-bold mb-0 text-black">List of products</h2>
 
-                      <h6 class="mb-0 text-black">
-                        <label for="sortBy">Sort by:</label>
-                        <select name="sortBy" id="sortBy">
-                          <option value="" selected disabled hidden>Select one</option>
-                          <option value="1">Price: lowest first</option>
-                          <option value="-1">Price: highest first</option>
-                        </select>
-                      </h6>
-                    </div>
+                  <a class="text-body" onclick="myCart()" id="cart_icon"><svg xmlns="http://www.w3.org/2000/svg"
+                      width="30" height="30" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+                      <path
+                        d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+                    </svg></a>
+                </div>
 
-                    <div class="container products__container">
-                        {{#each products}}
-                            <div class="card" style="width: 16rem;">
-                                <img src="{{this.thumbnail}}" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h4 class="card-title">ARS$ {{this.price}}</h4>
-                                    <h5 class="card-title">{{this.title}}</h5>
-                                    <p class="card-text">{{this.description}}</p>
-                                    <a class="btn btn-primary btn-addToCart" onclick="addProductToCart('{{this._id}}')">Add to Cart</a> 
-                                </div>
-                            </div>
-                        {{/each}}
+                {{!-- <h3 class="mb-0 text-black" id="category_title">Category</h3> --}}
+                <div class="d-flex justify-content-between align-items-center mb-5">
+                  <h6>
+                    <label for="category_selection">Categories:</label>
+                    <select name="category_selection" id="category_selection">
+                      <option value="" selected disabled hidden>Select one</option>
+                      <option value="all">All</option>
+                      {{#each categories}}
+                      <option value="{{this}}">{{this}}</option>
+                      {{/each}}
+                    </select>
+                  </h6>
+                  <h6>
+                    <label for="availability_selection">Availability:</label>
+                    <select name="availability_selection" id="availability_selection">
+                      <option value="" selected disabled hidden>Select one</option>
+                      <option value="false">All</option>
+                      <option value="true">In stock</option>
+                    </select>
+                  </h6>
+
+                  <h6 class="mb-0 text-black">
+                    <label for="sortBy">Sort by:</label>
+                    <select name="sortBy" id="sortBy">
+                      <option value="" selected disabled hidden>Select one</option>
+                      <option value="1">Price: lowest first</option>
+                      <option value="-1">Price: highest first</option>
+                    </select>
+                  </h6>
+                </div>
+
+                <div class="container products__container">
+                  {{#each products}}
+                  <div class="card" style="width: 16rem;">
+                    <img src="{{this.thumbnail}}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                      <h4 class="card-title">ARS$ {{this.price}}</h4>
+                      <h5 class="card-title">{{this.title}}</h5>
+                      <p class="card-text">{{this.description}}</p>
+                      <a class="btn btn-primary btn-addToCart" onclick="addProductToCart('{{this._id}}')">Add to
+                        Cart</a>
                     </div>
-                  </div >
+                  </div>
+                  {{/each}}
+                </div>
               </div>
             </div>
           </div>
-                    <ul class="pagination">
-                      <li class="page-item">
-                        {{#if prevLink}}  
-                            <a class="page-link" href="{{prevLink}}">&lt Prev</a>
-                        {{else}}
-                            <a class="page-link" style="pointer-events: none; color: grey">&lt Prev</a>
-                        {{/if}}
-                      </li>
-                      <li class="page-item"><a class="page-link" style="pointer-events: none;color: black">{{currentPage}} of {{totalPages}}</a></li>
-                      <li class="page-item">
-                        {{#if nextLink}}  
-                          <a class="page-link" href="{{nextLink}}">Next &gt</a>
-                        {{else}}
-                          <a class="page-link" style="pointer-events: none; color: grey">Next &gt</a>
-                        {{/if}}
-                      </li>
-                    </ul>
         </div>
+        <ul class="pagination">
+          <li class="page-item">
+            {{#if prevLink}}
+            <a class="page-link" href="{{prevLink}}">&lt Prev</a>
+            {{else}}
+            <a class="page-link" style="pointer-events: none; color: grey">&lt Prev</a>
+            {{/if}}
+          </li>
+          <li class="page-item"><a class="page-link" style="pointer-events: none;color: black">{{currentPage}} of
+              {{totalPages}}</a></li>
+          <li class="page-item">
+            {{#if nextLink}}
+            <a class="page-link" href="{{nextLink}}">Next &gt</a>
+            {{else}}
+            <a class="page-link" style="pointer-events: none; color: grey">Next &gt</a>
+            {{/if}}
+          </li>
+        </ul>
       </div>
     </div>
+  </div>
   </div>
 </section>
 
