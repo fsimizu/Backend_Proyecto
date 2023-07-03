@@ -1,8 +1,9 @@
 import express from "express";
 import { cartService } from "../services/carts.service.js";
+import { isUser, isAdmin } from "../../middlewares/auth.js";
 export const cartsRouter = express.Router();
 
-cartsRouter.get('/:cid', async (req, res) => {
+cartsRouter.get('/:cid', isUser, async (req, res) => {
     try {
       const cartId = req.params.cid;
       const searchedCart = await cartService.getCart({cartId});

@@ -1,24 +1,26 @@
 <h1>
     Welcome
-    {{#if firstName}}
+    {{!-- {{#if firstName}}
     back {{firstName}}!
     {{else}}
     !
-    {{/if}}
+    {{/if}} --}}
 </h1>
-
-
 <div class="home__container">
     <div class="home__form-container">
-        <form action="/api/sessions/login" method="post">
+        {{!-- <form action="/api/sessions/login" method="post"> --}}
+        <form action="/auth/login" method="post">
             <div class="form-group">
                 <label for="signInEmail">Email address</label>
-                <input type="email" class="form-control" name="signInEmail" id="signInEmail" aria-describedby="emailHelp" placeholder="Enter email">
-                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                <input type="email" class="form-control" name="email" id="signInEmail"
+                    aria-describedby="emailHelp" placeholder="Enter email" required>
+                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
+                    else.</small>
             </div>
             <div class="form-group">
                 <label for="signInPassword">Password</label>
-                <input type="password" class="form-control" name="signInPassword" id="signInPassword" placeholder="Password">
+                <input type="password" class="form-control" name="password" id="signInPassword"
+                    placeholder="Password" required>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
             {{#if firstName}}
@@ -26,10 +28,17 @@
             {{else}}
             <p><em>You are not signed in</em></p>
             {{/if}}
-            
         </form>
-        <hr>
-        <form action="/api/sessions/register" method="GET">
+
+            <p>- or sign up using -</p>
+            <div class="social-login">   
+                <div class="social-login__container"><a href="#" class="fa fa-facebook-f"></a></div>
+                <div class="social-login__container"><a href="#" class="fa fa-instagram"></a></div>
+                <div class="social-login__container"><a href="/api/sessions/github" class="fa fa-github"></a></div>
+            </div>
+
+            <hr>
+        <form action="/register" method="get">
             <p>Don't have an account?</p>
             <button type="submit" class="btn btn-secondary">Create new account</button>
         </form>

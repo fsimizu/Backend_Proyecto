@@ -1,8 +1,9 @@
 import express from "express";
 import { productService } from "../services/products.service.js";
 export const productsRouter = express.Router();
+import { isUser, isAdmin } from "../../middlewares/auth.js";
 
-productsRouter.get('/', async (req, res) => {
+productsRouter.get('/', isUser, async (req, res) => {
   try{
     const { limit, sort, page, category, available } = req.query;
     

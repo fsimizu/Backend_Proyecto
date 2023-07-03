@@ -1,4 +1,3 @@
-//@ts-check
 import * as fs from 'fs';
 
 export function readCartsFile() {
@@ -28,11 +27,11 @@ return new Promise((resolve, reject) => {
 }
 
 
-export function checkLogin(req, res, next) {
+// export function checkLogin(req, res, next) {
 
-  if (req.session.user) {
-    return next();
-  } else {
-    return res.status(401).send('Authorization error');
-  }
-}
+//   if (req.session.user) {
+//     return next();
+//   } else {
+//     return res.status(401).send('Authorization error');
+//   }
+// }

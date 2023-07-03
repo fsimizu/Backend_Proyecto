@@ -30,3 +30,26 @@
 .home__form-container p {
     text-align: center;
 }
+
+.social-login {
+    display: flex;
+    justify-content: center;
+
+}
+
+.social-login__container {
+    height: 40px;
+    width: 40px;
+    background-color: grey;
+    border-radius: 50%;
+    margin: 0 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.social-login__container a {
+    text-decoration: none;
+    color: black;
+    font-size: 20px;
+}
