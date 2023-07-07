@@ -73,7 +73,7 @@ app.use("/api/users", usersApiRouter);
 app.use("/api/sessions", loginRouter);
 app.get("/api/sessions/github", passport.authenticate('github', { scope: ['user:email'] }));
 app.get('/api/sessions/githubcallback', passport.authenticate('github', { failureRedirect: '/auth/error' }), (req, res) => {
-  req.session.user = req.user.username;
+  req.session.user = req.user;
   // Successful authentication, redirect home.
   res.redirect('/products');
 });
