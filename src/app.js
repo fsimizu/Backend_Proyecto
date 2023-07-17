@@ -1,10 +1,11 @@
 import MongoStore from 'connect-mongo';
+import cookieParser from 'cookie-parser';
 import express from 'express';
 import handlebars from "express-handlebars";
 import session from 'express-session';
+import jwt from 'jsonwebtoken';
 import passport from 'passport';
 import path from "path";
-import FileStore from 'session-file-store';
 import { __dirname } from './config.js';
 import { iniPassport } from './config/passport.config.js';
 import { authRouter } from './routes/auth.router.js';
@@ -33,6 +34,7 @@ connectSocketServer(httpServer);
 //CONFIG EXPRESS
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+app.use(cookieParser('coder-secret'));
 
 // app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static('public'));
@@ -64,7 +66,8 @@ app.use(
   
   iniPassport();
   app.use(passport.initialize());
-  app.use(passport.session());
+  // si usamos session hay que descomentar la prox linea:
+  // app.use(passport.session());
 
 //CONFIG RUTAS
 app.use("/api/products", productsApiRouter);
@@ -73,10 +76,64 @@ app.use("/api/users", usersApiRouter);
 app.use("/api/sessions", loginRouter);
 app.get("/api/sessions/github", passport.authenticate('github', { scope: ['user:email'] }));
 app.get('/api/sessions/githubcallback', passport.authenticate('github', { failureRedirect: '/auth/error' }), (req, res) => {
-  req.session.user = req.user.username;
+  req.session.user = req.user;
   // Successful authentication, redirect home.
   res.redirect('/products');
 });
+
+
+const SECRET = 'coderSecret';
+app.use('/api/jwt-login', (req, res) => {
+  const { email, password } = req.body;
+  // console.log(email, password);
+  if (email == 'pepe@pepe.com' && password == '123') {
+    const token = jwt.sign({ email, role: 'user' }, SECRET, { expiresIn: '24h' });
+
+    return res
+      .cookie('token', token, { maxAge: 24 * 60 * 60 * 1000, httpOnly: true })
+      .status(200)
+      .json({
+        status: 'success',
+        msg: 'login success!!',
+        payload: token,
+      });
+  } else {
+    return res.status(400).json({
+      status: 'error',
+      msg: 'no se puede ingresar',
+      data: {},
+    });
+  }
+});
+
+// app.get('/api/jwt-profile', passportCall('jwt'), checkAuth('admin'), (req, res) => {
+//   console.log('hola');
+//   return res.json({ user: req.user });
+// });
+
+// app.get('/api/jwt-profile', passport.authenticate('jwt', {session: false}), (req, res) => {
+//   return res.json({ user: req.user });
+// });
+
+// app.get('/api/jwt-profile', (req, res) => {
+//   const token = req.cookies.token;
+//   // const token = req.headers['authorization'].split(' ')[1];
+//   console.log(token);
+//   try {
+//     const decoded = jwt.verify(token, SECRET);
+//     return res.status(200).json({
+//       status: 'success',
+//       msg: 'your profile',
+//       payload: decoded,
+//     });
+//   } catch (error) {
+//     return res.status(401).json({
+//       status: 'error',
+//       msg: 'Unauthorized',
+//       payload: {},
+//     })
+//   }
+// });
 
 app.use("/", viewsRouter);
 app.use("/products", productsRouter);

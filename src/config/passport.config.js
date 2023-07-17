@@ -5,8 +5,22 @@ import local from 'passport-local';
 import { UserModel } from "../dao/models/users.model.js";
 import { createHash, isValidPassword } from '../utils/passEncryption.js';
 import { GITHUB_SECRET } from "./env.js";
+// import jwt from 'jsonwebtoken';
+import jwt from 'passport-jwt';
+import { userService } from '../services/users.service.js';
+const JWTStrategy = jwt.Strategy;
+const ExtractJWT = jwt.ExtractJwt;
+
 const LocalStrategy = local.Strategy;
-// import LocalStrategy from 'passport-local' 
+
+
+function cookieExtractor(req) {
+    let token = null;
+    if (req?.cookies?.token) {
+        token = req.cookies.token;
+    }
+    return token;
+}
 
 export function iniPassport() {
 
@@ -14,7 +28,9 @@ export function iniPassport() {
         'login',
         new LocalStrategy({ usernameField: 'email' }, async (username, password, done) => {
             try {
-                const user = await UserModel.findOne({ email: username });
+                // const user = await UserModel.findOne({ email: username });
+                const user = await userService.getUserByEmail(username);
+                console.log(user)
                 if (!user) {
                     console.log('User Not Found with email ' + username);
                     return done(null, false);
@@ -23,8 +39,10 @@ export function iniPassport() {
                     console.log('Invalid Password');
                     return done(null, false);
                 }
+                delete user.password; //verificar que esta borrando el password - no lo esta borrando
                 return done(null, user);
             } catch (err) {
+                console.log('error aca')
                 return done(err);
             }
         })
@@ -40,24 +58,30 @@ export function iniPassport() {
 
             async (req, username, password, done) => {
                 try {
-                    // const { registerName: firstName, registerLastName: lastName, registerEmail: email } = req.body;
-                    const { email, firstName, lastName } = req.body;
-                    let user = await UserModel.findOne({ email: username });
-                    // console.log(user);
+                    const { email, firstName, lastName, age } = req.body;
+                    let user = await UserModel.findOne({ email: username }); //llamar al servicio
                     
                     if (user) {
                         console.log('User already exists');
-                        return done(null, user);
+                        return done(null, false);
                     }
+
+                    console.log('Esta linea no deberia imprimirse');
 
                     const newUser = {
                         email,
                         firstName,
                         lastName,
+                        age,
                         isAdmin: false,
+                        role: "user",
                         password: createHash(password),
+                        // cart:  poner el cartId cuando se registra el usuario o cuando se agrega un prod al carrito
                     };
-                    let userCreated = await UserModel.create(newUser);
+
+                    // let userCreated = await UserModel.create(newUser);
+                    let userCreated = await userService.createUsers(newUser);
+
                     console.log(userCreated);
                     console.log('User Registration succesful');
                     return done(null, userCreated);
@@ -102,7 +126,7 @@ export function iniPassport() {
                             lastName: 'nolast',
                             isAdmin: false,
                             role: "user",
-                            pass: 'nopass',
+                            password: 'nopass',
                         };
                         let userCreated = await UserModel.create(newUser);
                         console.log('User Registration succesful');
@@ -119,6 +143,26 @@ export function iniPassport() {
             }
         )
     );
+
+
+
+    passport.use(
+        'jwt',
+        new JWTStrategy(
+            {
+                jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]),
+                secretOrKey: 'coderSecret',
+            },
+            async (jwt_payload, done) => {
+                try {
+                    return done (null, jwt_payload)
+                } catch (error) {
+                    return done(e)   
+                }
+            }
+        )
+    );
+
 
     passport.serializeUser((user, done) => {
         done(null, user._id);

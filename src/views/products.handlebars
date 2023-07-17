@@ -11,7 +11,7 @@
                 {{#if firstName}}
                   <h1 class="fw-bold mb-0 text-black">Hi {{firstName}}!</h1>
                     <form id="products__logout-btn" action="/logout" method="get">
-                      <span><em>You are signed in as {{email}} with a role {{role}}</em></span>
+                      <span><em>You are signed in as {{email}} with a{{#if isAdmin}}n admin{{else}} user{{/if}} role</em></span>
                       <button type="submit" class="btn btn-primary">Logout</button>
                     </form>
                   {{else}}

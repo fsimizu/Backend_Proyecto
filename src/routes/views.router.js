@@ -27,7 +27,13 @@ viewsRouter.get('/logout', (req, res) => {
       }
       res.redirect('/');
     });
-  });
+});
+
+
+viewsRouter.get('/jwt-login', (req, res) => {
+  return res.render('jwt-login');
+});
+
 
 // viewsRouter.get('/error', (_, res) => {
 //     res.render('error', {status: 500 , msg: 'Error closing the session'})

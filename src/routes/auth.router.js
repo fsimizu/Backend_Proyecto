@@ -11,18 +11,28 @@ authRouter.get('/register', (_, res) => {
     return res.render('register', {});
 });
 
-
 authRouter.post('/register', passport.authenticate('register',  { failureRedirect: '/auth/failregister' }),  (req, res) => {
+    
     if (!req.user) {
-        return res.json({ error: 'The user already exists in our database' });
+        return res
+            .status(400)
+            .render('error', {code: 400, msg: "The user already exists in our database"}) ;
     }
-    req.session.user = { _id: req.user._id, email: req.user.email, firstName: req.user.firstName, lastName: req.user.lastName, isAdmin: req.user.isAdmin };
 
-    return res.json({ msg: 'ok', payload: req.user });
+    req.session.user = { 
+        _id: req.user._id, 
+        email: req.user.email, 
+        firstName: req.user.firstName, 
+        isAdmin: req.user.isAdmin 
+    };
+
+    return res.redirect('/products');
 });
 
-authRouter.get('/failregister', async (_, res) => {
-    return res.json({ error: 'fail to register' });
+authRouter.get('/failregister', async (_, res) => {   
+    return res
+    .status(400)
+    .render('error', {code: 400, msg: "Failed to register the user"}) ;
 });
 
 authRouter.get('/login', (req, res) => {
@@ -30,25 +40,30 @@ authRouter.get('/login', (req, res) => {
 });
 
 authRouter.post(
-    '/login',
-    passport.authenticate('login', { failureRedirect: '/auth/faillogin' }), 
-    async (req, res) => {
+    '/login', passport.authenticate('login', { failureRedirect: '/auth/faillogin' }), async (req, res) => {
+        
         if (!req.user) {
-            return res.json({ error: 'invalid credentials' });
-        }
-        req.session.user = { 
-            _id: req.user._id, 
-            email: req.user.email, 
-            firstName: req.user.firstName, 
-            lastName: req.user.lastName, 
-            isAdmin: req.user.isAdmin 
-        };
+            return res
+                .status(400)
+                .render('error', {code: 400, msg: "Invalid credentials"}) 
+        } //no llega nunca a esta linea
+
+        req.session.user = req.user;
+        
+        // { 
+        //     _id: req.user._id, 
+        //     email: req.user.email, 
+        //     firstName: req.user.firstName, 
+        //     isAdmin: req.user.isAdmin 
+        // };
+
         return res.redirect('/products');
-        // return res.json({ msg: 'ok', payload: req.user });
     });
 
 authRouter.get('/faillogin', async (req, res) => {
-    return res.json({ error: 'fail to login' });
+    return res
+    .status(400)
+    .render('error', {code: 400, msg: "Failed to login"}) ;
 });
 
 authRouter.get('/logout', (req, res) => {

@@ -8,7 +8,7 @@ if (!localStorage.getItem('cartId')) {
     fetch('/api/carts', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+                   'Content-Type': 'application/json'
         },
     })
     .then(response => response.json())

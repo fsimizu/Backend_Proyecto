@@ -11,14 +11,26 @@ class UserService {
             }
         );
     };
+    
+    async getUserByEmail(email) {
+        try {
+            return await UserModel.findOne({email: email},
+                {
+                    _id: true,
+                    email: true,
+                    firstName: true,
+                    isAdmin: true,
+                    password: true,
+                });
 
-    async getUserByEmail(email,pass) {
-        return await UserModel.find({email: email, pass: pass}
-        );
+
+        } catch (error) {
+            return null
+        }
     };
 
-    async createUsers({ firstName, lastName, email, pass }) {
-        return await UserModel.create({ firstName, lastName, email, pass }
+    async createUsers({ firstName, lastName, email, age, isAdmin, role, password }) {
+        return await UserModel.create({ firstName, lastName, email, age, isAdmin, role, password }
         );
     };
 

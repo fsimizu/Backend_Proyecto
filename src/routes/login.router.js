@@ -79,3 +79,7 @@ loginRouter.post('/register', async (req, res) => {
 //       res.redirect('/');
 //     });
 //   });
+
+loginRouter.get('/current', (req, res) => {
+    return res.send(JSON.stringify(req.session));
+});
