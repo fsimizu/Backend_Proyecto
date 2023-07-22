@@ -2,12 +2,13 @@ import fetch from 'node-fetch';
 import passport from 'passport';
 import GitHubStrategy from 'passport-github2';
 import local from 'passport-local';
-import { UserModel } from "../dao/models/users.model.js";
+import { userModel } from "../dao/models/users.model.js";
 import { createHash, isValidPassword } from '../utils/passEncryption.js';
 import { GITHUB_SECRET } from "./env.js";
 // import jwt from 'jsonwebtoken';
 import jwt from 'passport-jwt';
 import { userService } from '../services/users.service.js';
+import env from './environment.config.js';
 const JWTStrategy = jwt.Strategy;
 const ExtractJWT = jwt.ExtractJwt;
 
@@ -99,7 +100,7 @@ export function iniPassport() {
         new GitHubStrategy(
             {
                 clientID: 'Iv1.9a387c7c1e7858a0',
-                clientSecret: GITHUB_SECRET,
+                clientSecret: env.githubSecret,
                 callbackURL: 'http://localhost:8080/api/sessions/githubcallback',
             },
             async (accesToken, _, profile, done) => {
@@ -169,7 +170,7 @@ export function iniPassport() {
     });
 
     passport.deserializeUser(async (id, done) => {
-        let user = await UserModel.findById(id);
+        let user = await userService.getUserById(id) ;
         done(null, user);
     });
 }

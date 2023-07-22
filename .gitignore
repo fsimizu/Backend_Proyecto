@@ -2,3 +2,5 @@ node_modules
 
 # ignore environmnet variables
 src/config/env.js
+.env.development
+.env.production

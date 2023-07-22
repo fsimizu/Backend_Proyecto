@@ -1,8 +1,14 @@
-<h1>New account</h1>
 <div class="home__container">
     <div class="home__form-container">
         {{!-- <form action="/api/sessions/register" method="post"> --}}
+            <h3 class="home__title">New account</h3>
             <form action="/auth/register" method="post">
+                
+                <div class="home__subtitle">
+                    <div><strong>Register to continue</strong></div>
+                    <div>Already a member? <a href="/">Sign in</a></div>
+                </div>
+                
                 <div class="form-group">
                     <label for="registerEmail">Email address</label>
                     <input type="email" class="form-control" id="registerEmail" name="email"
@@ -31,12 +37,6 @@
                 </div>
 
                 <button type="submit" class="btn btn-primary">Register</button>
-            </form>
-
-            <hr>
-            <form action="/" method="get">
-                <p>Already have an account?</p>
-                <button type="submit" class="btn btn-secondary">Sign in</button>
             </form>
     </div>
 </div>

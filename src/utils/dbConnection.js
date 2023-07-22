@@ -1,12 +1,13 @@
 import { connect } from "mongoose";
 import { faker } from '@faker-js/faker';
-import { ProductModel } from "../dao/models/products.models.js";
+import env from '../config/environment.config.js'
 
 
 export async function connectMongo() {
     try {
       await connect(
-        "mongodb+srv://fersimizu:ZogB7pClZEtkTnny@backend.yutifmg.mongodb.net/?retryWrites=true&w=majority",
+        env.mongoUrl,
+        // "mongodb+srv://fersimizu:ZogB7pClZEtkTnny@backend.yutifmg.mongodb.net/?retryWrites=true&w=majority",
         {
           dbName: "ecommerce"
         }

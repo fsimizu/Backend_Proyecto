@@ -1,13 +1,49 @@
-import { Schema, model } from "mongoose";
+import { UserMongooseModel } from "./mongoose/users.mongoose.js";
 
-const userSchema = new Schema({
-  firstName: { type: String, required: true, max: 100 },
-  lastName: { type: String, required: true, max: 100 },
-  email: { type: String, required: true, max: 100 , unique : true},
-  age: { type: Number, required: false },
-  password: { type: String, required: true, max: 100 },
-  role: { type: String, required: true, max: 100, default: "user" },
-  isAdmin: { type: Boolean, required: true, max: 100, default: false },
-  cart: { type: String, required: false },
-});
-export const UserModel = model("users", userSchema);
+class UserModel {
+
+  getUsers() {
+    return UserMongooseModel.find({},
+      {
+        _id: true,
+        firstName: true,
+        lastName: true,
+        email: true
+      }
+    );
+  }
+
+  getUserByEmail(email) {
+    return UserMongooseModel.findOne({ email: email },
+      {
+        _id: true,
+        email: true,
+        firstName: true,
+        isAdmin: true,
+        password: true,
+      });
+  }
+
+  getUserById(id) {
+    return UserMongooseModel.findById(id)
+  }
+
+  createUsers({ firstName, lastName, email, age, isAdmin, role, password }) {
+    return UserMongooseModel.create({ firstName, lastName, email, age, isAdmin, role, password })
+  }
+
+  updateUsers({ _id, firstName, lastName, email }) {
+    return UserMongooseModel.updateOne(
+      { _id: _id },
+      { firstName, lastName, email }
+    )
+  }
+
+  deleteUsers(_id) {
+    return UserMongooseModel.deleteOne({ _id: _id })
+  }
+
+
+}
+
+export const userModel = new UserModel();

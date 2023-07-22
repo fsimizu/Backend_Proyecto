@@ -7,6 +7,7 @@ import jwt from 'jsonwebtoken';
 import passport from 'passport';
 import path from "path";
 import { __dirname } from './config.js';
+import env from './config/environment.config.js';
 import { iniPassport } from './config/passport.config.js';
 import { authRouter } from './routes/auth.router.js';
 import { cartsApiRouter } from './routes/carts.api.router.js';
@@ -21,7 +22,7 @@ import { connectMongo } from './utils/dbConnection.js';
 import { connectSocketServer } from './utils/socketServer.js';
 
 const app = express();
-const port = 8080;
+const port = env.port;
 // const fileStore = FileStore(session)
 
 const httpServer = app.listen(port, () => {
@@ -53,7 +54,7 @@ app.engine("handlebars", handlebars.engine({
 app.use(
   session({
     store: MongoStore.create({
-      mongoUrl: "mongodb+srv://fersimizu:ZogB7pClZEtkTnny@backend.yutifmg.mongodb.net/?retryWrites=true&w=majority",
+      mongoUrl: env.mongoUrl,
       mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
       ttl: 30,
       dbName: "ecommerce",
@@ -63,48 +64,53 @@ app.use(
     saveUninitialized: true,
     // store: new fileStore({ path: __dirname + '/sessions', ttl: 100, retries: 0})
   }))
-  
-  iniPassport();
-  app.use(passport.initialize());
-  // si usamos session hay que descomentar la prox linea:
-  // app.use(passport.session());
 
-//CONFIG RUTAS
+iniPassport();
+app.use(passport.initialize());
+app.use(passport.session());
+
+//CONFIG RUTAS API
 app.use("/api/products", productsApiRouter);
 app.use("/api/carts", cartsApiRouter);
 app.use("/api/users", usersApiRouter);
 app.use("/api/sessions", loginRouter);
-app.get("/api/sessions/github", passport.authenticate('github', { scope: ['user:email'] }));
-app.get('/api/sessions/githubcallback', passport.authenticate('github', { failureRedirect: '/auth/error' }), (req, res) => {
-  req.session.user = req.user;
-  // Successful authentication, redirect home.
-  res.redirect('/products');
+
+//CONFIG RUTAS VIEWS
+app.use("/", viewsRouter);
+app.use("/products", productsRouter);
+app.use("/carts", cartsRouter);
+app.use("/chat", chatRouter);
+app.use("/auth", authRouter);
+app.use("*", (_,res) => {
+  return res.status(404).render('error', {code: 404, msg: "Site not found."})
 });
 
 
-const SECRET = 'coderSecret';
-app.use('/api/jwt-login', (req, res) => {
-  const { email, password } = req.body;
-  // console.log(email, password);
-  if (email == 'pepe@pepe.com' && password == '123') {
-    const token = jwt.sign({ email, role: 'user' }, SECRET, { expiresIn: '24h' });
 
-    return res
-      .cookie('token', token, { maxAge: 24 * 60 * 60 * 1000, httpOnly: true })
-      .status(200)
-      .json({
-        status: 'success',
-        msg: 'login success!!',
-        payload: token,
-      });
-  } else {
-    return res.status(400).json({
-      status: 'error',
-      msg: 'no se puede ingresar',
-      data: {},
-    });
-  }
-});
+
+// const SECRET = 'coderSecret';
+// app.use('/api/jwt-login', (req, res) => {
+//   const { email, password } = req.body;
+//   // console.log(email, password);
+//   if (email == 'pepe@pepe.com' && password == '123') {
+//     const token = jwt.sign({ email, role: 'user' }, SECRET, { expiresIn: '24h' });
+
+//     return res
+//       .cookie('token', token, { maxAge: 24 * 60 * 60 * 1000, httpOnly: true })
+//       .status(200)
+//       .json({
+//         status: 'success',
+//         msg: 'login success!!',
+//         payload: token,
+//       });
+//   } else {
+//     return res.status(400).json({
+//       status: 'error',
+//       msg: 'no se puede ingresar',
+//       data: {},
+//     });
+//   }
+// });
 
 // app.get('/api/jwt-profile', passportCall('jwt'), checkAuth('admin'), (req, res) => {
 //   console.log('hola');
@@ -134,13 +140,3 @@ app.use('/api/jwt-login', (req, res) => {
 //     })
 //   }
 // });
-
-app.use("/", viewsRouter);
-app.use("/products", productsRouter);
-app.use("/carts", cartsRouter);
-app.use("/chat", chatRouter);
-app.use("/auth", authRouter);
-app.use("*", (_,res) => {
-  return res.status(404).render('error', {code: 404, msg: "Site not found."})
-});
-

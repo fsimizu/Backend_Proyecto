@@ -1,5 +1,5 @@
 import { Server } from 'socket.io';
-import { MessageModel } from '../dao/models/messages.model.js';
+import { messageModel } from '../dao/models/messages.model.js';
 
 export function connectSocketServer(httpServer) {
     const socketServer = new Server(httpServer);
@@ -9,13 +9,14 @@ export function connectSocketServer(httpServer) {
     
       socket.on("msg_front_to_back", async(msg) => {
         try {
-          await MessageModel.create(msg);
+          await messageModel.createMessage(msg);
         } catch (e) {
           console.log(e);
         }
         
         try {
-          const msgs = await MessageModel.find({})
+          const msgs = await messageModel.findAllMessages()
+
           socketServer.emit("listado_de_msgs", msgs);
 
         } catch (e) {

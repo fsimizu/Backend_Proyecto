@@ -26,4 +26,4 @@ cartSchema.pre('findOne', function() {
   this.populate('products.product')
 })
 
-export const CartModel = model("carts", cartSchema);
+export const CartsMongooseModel = model("carts", cartSchema);

@@ -1,48 +1,36 @@
-import { UserModel } from "../dao/models/users.model.js";
+import { userModel } from "../dao/models/users.model.js";
 
 class UserService {
     async getUsers() {
-        return await UserModel.find({},
-            {
-              _id: true,
-              firstName: true,
-              lastName: true,
-              email: true
-            }
-        );
+        return await UserModel.getUsers();
     };
     
     async getUserByEmail(email) {
         try {
-            return await UserModel.findOne({email: email},
-                {
-                    _id: true,
-                    email: true,
-                    firstName: true,
-                    isAdmin: true,
-                    password: true,
-                });
+            return await userModel.getUserByEmail(email)
+        } catch (error) {
+            return null
+        }
+    };
 
-
+    async getUserById(id) {
+        try {
+            return await userModel.getUserById(id)
         } catch (error) {
             return null
         }
     };
 
     async createUsers({ firstName, lastName, email, age, isAdmin, role, password }) {
-        return await UserModel.create({ firstName, lastName, email, age, isAdmin, role, password }
-        );
+        return await userModel.createUsers({ firstName, lastName, email, age, isAdmin, role, password });
     };
 
-    async updateUsers ( { _id, firstName, lastName, email } ) {
-        return await UserModel.updateOne(
-            { _id: _id },
-            { firstName, lastName, email }
-        );
+    async updateUsers({ _id, firstName, lastName, email }) {
+        return await userModel.updateUsers({ _id, firstName, lastName, email })
     }
 
-    async deleteUsers ( _id ) {
-        return await UserModel.deleteOne({ _id: _id });
+    async deleteUsers(_id) {
+        return await userModel.deleteUsers(_id);
     }
 };
 

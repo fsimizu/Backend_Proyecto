@@ -1,7 +1,15 @@
-import { Schema, model } from "mongoose";
+import { MessageMongooseModel } from "./mongoose/messages.mongoose.js";
 
-const messageSchema = new Schema({
-    user: { type: String, required: true, max: 100 },
-    message: { type: String, required: true, max: 100 }
-  });
-  export const MessageModel = model("messages", messageSchema);
+class MessageModel {
+  
+  creteMessage(msg) {
+    return MessageMongooseModel.create(msg);
+  };
+
+  findAllMessages() {
+    return MessageMongooseModel.find({})
+  }
+  
+}
+
+export const messageModel = new MessageModel();
