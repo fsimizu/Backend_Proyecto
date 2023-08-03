@@ -1,6 +1,6 @@
 import { UserMongooseModel } from "./mongoose/users.mongoose.js";
 
-class UserModel {
+export default class UserModel {
 
   getUsers() {
     return UserMongooseModel.find({},
@@ -21,6 +21,7 @@ class UserModel {
         firstName: true,
         isAdmin: true,
         password: true,
+        cart: true
       });
   }
 
@@ -28,8 +29,8 @@ class UserModel {
     return UserMongooseModel.findById(id)
   }
 
-  createUsers({ firstName, lastName, email, age, isAdmin, role, password }) {
-    return UserMongooseModel.create({ firstName, lastName, email, age, isAdmin, role, password })
+  createUsers({ firstName, lastName, email, age, isAdmin, role, password, cart }) {
+    return UserMongooseModel.create({ firstName, lastName, email, age, isAdmin, role, password, cart })
   }
 
   updateUsers({ _id, firstName, lastName, email }) {
@@ -43,7 +44,11 @@ class UserModel {
     return UserMongooseModel.deleteOne({ _id: _id })
   }
 
+  assignCart(userId, cartId) {
+    return UserMongooseModel.findByIdAndUpdate(userId, cartId, { new: true });
+  }
+
 
 }
 
-export const userModel = new UserModel();
+// export const userModel = new UserModel();

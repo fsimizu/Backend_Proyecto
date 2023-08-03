@@ -1,8 +1,11 @@
-import { userModel } from "../dao/models/users.model.js";
+// import { userModel } from "../dao/mongo/users.model.js";
+import { UserModel } from '../dao/factory.js';
+
+const userModel = new UserModel();
 
 class UserService {
     async getUsers() {
-        return await UserModel.getUsers();
+        return await userModel.getUsers();
     };
     
     async getUserByEmail(email) {
@@ -21,8 +24,8 @@ class UserService {
         }
     };
 
-    async createUsers({ firstName, lastName, email, age, isAdmin, role, password }) {
-        return await userModel.createUsers({ firstName, lastName, email, age, isAdmin, role, password });
+    async createUsers({ firstName, lastName, email, age, isAdmin, role, password, cart }) {
+        return await userModel.createUsers({ firstName, lastName, email, age, isAdmin, role, password, cart });
     };
 
     async updateUsers({ _id, firstName, lastName, email }) {

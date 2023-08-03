@@ -2,6 +2,8 @@ import express from "express";
 import { userService } from "../services/users.service.js";
 export const usersApiRouter = express.Router();
 
+
+// aca tengo que llamar al middleware de isAdmin y crear el controller de users (no usar el de passport)
 usersApiRouter.get("/", async (_, res) => {
   try {
     const users = await userService.getUsers();

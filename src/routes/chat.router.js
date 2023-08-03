@@ -1,6 +1,7 @@
 import express from "express";
+import { chatController } from '../controllers/chat.controller.js';
+import { isUser } from "../middlewares/auth.js";
+
 export const chatRouter = express.Router();
 
-chatRouter.get("/", (_, res) => {
-    return res.status(201).render('chat', {});
-});
+chatRouter.get('/', isUser, chatController.get);

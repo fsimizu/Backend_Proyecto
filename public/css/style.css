@@ -9,20 +9,34 @@
     cursor: pointer
 }
 
+
+.chat_button {
+    background-color: lightgray;
+    padding: 10px;
+    position: fixed;
+    bottom: 50px;
+    right: 50px;
+    border-radius: 5px;
+}
+
 .home__container {
     height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: #cedde2;
+    
+}
+
+.home__container .row {
+    margin: 0px;
 }
 
 .home__form-container {
+    height: 75vh;
     width: 500px;
     border: 1px solid lightgray;
-    /* margin: auto; */
     padding: 40px;
-    /* border-radius: 5px; */
     background-color: white;
 
 }

@@ -2,18 +2,18 @@ import fetch from 'node-fetch';
 import passport from 'passport';
 import GitHubStrategy from 'passport-github2';
 import local from 'passport-local';
-import { userModel } from "../dao/models/users.model.js";
 import { createHash, isValidPassword } from '../utils/passEncryption.js';
 import { GITHUB_SECRET } from "./env.js";
 // import jwt from 'jsonwebtoken';
 import jwt from 'passport-jwt';
 import { userService } from '../services/users.service.js';
+import { cartService } from '../services/carts.service.js';
 import env from './environment.config.js';
+
 const JWTStrategy = jwt.Strategy;
 const ExtractJWT = jwt.ExtractJwt;
 
 const LocalStrategy = local.Strategy;
-
 
 function cookieExtractor(req) {
     let token = null;
@@ -48,7 +48,7 @@ export function iniPassport() {
             }
         })
     );
-    
+
     passport.use(
         'register',
         new LocalStrategy(
@@ -60,14 +60,14 @@ export function iniPassport() {
             async (req, username, password, done) => {
                 try {
                     const { email, firstName, lastName, age } = req.body;
-                    let user = await UserModel.findOne({ email: username }); //llamar al servicio
-                    
+                    let user = await userService.getUserByEmail(username);
+
                     if (user) {
                         console.log('User already exists');
                         return done(null, false);
                     }
 
-                    console.log('Esta linea no deberia imprimirse');
+                    let cart = await cartService.createCart();
 
                     const newUser = {
                         email,
@@ -77,10 +77,9 @@ export function iniPassport() {
                         isAdmin: false,
                         role: "user",
                         password: createHash(password),
-                        // cart:  poner el cartId cuando se registra el usuario o cuando se agrega un prod al carrito
+                        cart: cart._id.toString(),
                     };
 
-                    // let userCreated = await UserModel.create(newUser);
                     let userCreated = await userService.createUsers(newUser);
 
                     console.log(userCreated);
@@ -95,16 +94,19 @@ export function iniPassport() {
         )
     );
 
+    const port = env.port;
+
     passport.use(
         'github',
         new GitHubStrategy(
             {
                 clientID: 'Iv1.9a387c7c1e7858a0',
                 clientSecret: env.githubSecret,
-                callbackURL: 'http://localhost:8080/api/sessions/githubcallback',
+                callbackURL: `http://localhost:${port}/api/sessions/githubcallback`,
+                // callbackURL: `http://localhost:${port}/auth/githubcallback`,
             },
             async (accesToken, _, profile, done) => {
-                console.log(profile);
+                // console.log(profile);
                 try {
                     const res = await fetch('https://api.github.com/user/emails', {
                         headers: {
@@ -119,8 +121,11 @@ export function iniPassport() {
                         return done(new Error('cannot get a valid email for this user'));
                     }
                     profile.email = emailDetail.email;
-                    let user = await UserModel.findOne({ email: profile.email });
+                    let user = await userService.getUserByEmail(profile.email);
+
                     if (!user) {
+                        let cart = await cartService.createCart();
+
                         const newUser = {
                             email: profile.email,
                             firstName: profile._json.name || profile._json.login || 'noname',
@@ -128,8 +133,10 @@ export function iniPassport() {
                             isAdmin: false,
                             role: "user",
                             password: 'nopass',
+                            cart: cart._id.toString(),
                         };
-                        let userCreated = await UserModel.create(newUser);
+
+                        let userCreated = await userService.createUsers(newUser);
                         console.log('User Registration succesful');
                         return done(null, userCreated);
                     } else {
@@ -145,8 +152,6 @@ export function iniPassport() {
         )
     );
 
-
-
     passport.use(
         'jwt',
         new JWTStrategy(
@@ -156,21 +161,20 @@ export function iniPassport() {
             },
             async (jwt_payload, done) => {
                 try {
-                    return done (null, jwt_payload)
+                    return done(null, jwt_payload)
                 } catch (error) {
-                    return done(e)   
+                    return done(e)
                 }
             }
         )
     );
-
 
     passport.serializeUser((user, done) => {
         done(null, user._id);
     });
 
     passport.deserializeUser(async (id, done) => {
-        let user = await userService.getUserById(id) ;
+        let user = await userService.getUserById(id);
         done(null, user);
     });
 }

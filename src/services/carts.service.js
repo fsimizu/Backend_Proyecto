@@ -1,19 +1,86 @@
-import { cartModel } from "../dao/models/carts.model.js";
+// import { CartModel } from "../dao/mongo/carts.model.js";
+import { CartModel } from '../dao/factory.js';
+import { ProductModel } from '../dao/factory.js';
+
+const cartModel = new CartModel()
+const productModel = new ProductModel()
 
 class CartService {
     async createCart() {
-        return await cartModel.create({});
+        return await cartModel.createCart({});
     };
 
     async getCart({cartId}) {
-        return await cartModel.getCart({_id: cartId})
+        const searchedCart = await cartModel.getCart({_id: cartId});
+
+        const products = searchedCart.products;
+
+        let totalItems = 0;
+        let totalPrice = 0;
+        products.forEach(obj => {
+            totalItems += obj.quantity;
+            totalPrice += obj.product.price * obj.quantity
+            obj.subtotal = obj.product.price * obj.quantity
+        })
+
+        return {products, totalItems, totalPrice};
     };
 
-    async upadateCart(cartId, products){
+    async updateCart(cartId, prodId) {
         try {
-            return await upadateCart(cartId, products);
+            const searchedCart = await cartModel.getCart({_id: cartId});
+
+            let existing = false;
+            searchedCart.products.forEach((prod) => {
+                if (prod.product._id == prodId) { existing = true; }
+            });
+            let prodIndex = searchedCart.products.findIndex((prod) => prod.product._id == prodId);
+            
+            if (existing) {
+                searchedCart.products[prodIndex].quantity++;
+            } else {
+                searchedCart.products.push({
+                    product: prodId,
+                    quantity: 1
+                })
+            }
+            await searchedCart.save();
+
+            return {
+                status: "success",
+                msg: "Cart found",
+                payload: searchedCart
+            };
+
         } catch (error) {
-            throw new Error ('Error updating the cart')
+            return {
+                status: "error",
+                msg: "Cart or product not found",
+                payload: {}
+            }
+            }; 
+
+    }
+
+    async clearOne(cartId, prodId) {
+        try {
+            const searchedCart = await cartModel.getCart({_id: cartId});
+            await productModel.getProductById({ _id: prodId }) //sirve para saber si existe el producto
+            searchedCart.products = searchedCart.products.filter(obj => obj.product._id.toString() !== prodId);
+            await searchedCart.save();
+
+            return {
+                status: "success",
+                msg: "Product removed from the cart",
+                payload: {}
+            };
+
+        } catch (error) {
+            return {
+                status: "error",
+                msg: "Cart or product not found",
+                payload: {}
+            }
         }
     }
 
@@ -28,7 +95,7 @@ class CartService {
         }
     }
 
-    async upadateQuantity(cartId, prodId, quantity){
+    async updateQuantity(cartId, prodId, quantity){
         try {
             const cart = await cartModel.findOne({_id: cartId});
             const prodIndex = cart.products.findIndex((obj) => obj.product._id.toString() === prodId)
@@ -42,6 +109,17 @@ class CartService {
             throw new Error ('Error updating the cart')
         }
     }
+
+    async createOrder( {cartId} ){
+        try {
+            const cart = await cartModel.findOne({_id: cartId});
+            await cart.save()
+            return cart;
+        } catch (error) {
+            throw new Error ('Error updating the cart')
+        }
+    }
+
 
 }
 

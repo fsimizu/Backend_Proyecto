@@ -1,6 +1,6 @@
 import { CartsMongooseModel } from "./mongoose/carts.mongoose.js";
 
-class CartModel {
+export default class CartModel {
 
   createCart() {
     return CartsMongooseModel.create({});
@@ -10,10 +10,10 @@ class CartModel {
     return CartsMongooseModel.findOne({ _id: cartId })
   };
 
-  upadateCart(cartId, products) {
+  updateCart(cartId, products) {
     return CartsMongooseModel.findByIdAndUpdate(cartId, products, { new: true });
   }
 
 }
 
-export const cartModel = new CartModel();
+// export const cartModel = new CartModel();

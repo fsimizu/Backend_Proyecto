@@ -25,11 +25,13 @@ const app = express();
 const port = env.port;
 // const fileStore = FileStore(session)
 
+//app.use(cors()); //esto se deberia restringir solo a la url donde se depliega el front.
+
 const httpServer = app.listen(port, () => {
   console.log(`Example app listening on port http://localhost:${port}`);
 })
 
-connectMongo();
+//connectMongo(); //cuando uso la factory esta linea no va mas.
 connectSocketServer(httpServer);
 
 //CONFIG EXPRESS

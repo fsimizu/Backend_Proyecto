@@ -1,6 +1,6 @@
 import { ProductsMongooseModel } from "./mongoose/products.mongoose.js";
 
-class ProductModel {
+export default class ProductModel {
 
     async getProducts({ queryLimit, queryPage, sort, filter }) {
             return await ProductsMongooseModel.paginate(filter, {
@@ -10,8 +10,8 @@ class ProductModel {
             })
     };
 
-    async getProductById({ prodId }) {
-        return await ProductsMongooseModel.findOne({ _id: prodId },
+    async getProductById( { _id } ) {
+        return await ProductsMongooseModel.findOne({ _id },
             {
                 title: true,
                 description: true,
@@ -45,5 +45,5 @@ class ProductModel {
 
 }
 
-  export const productModel = new ProductModel();
+//   export const productModel = new ProductModel();
   

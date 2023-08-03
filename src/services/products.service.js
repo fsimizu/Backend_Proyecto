@@ -1,22 +1,34 @@
-import { productModel } from "../dao/models/products.model.js";
+// import { productModel } from "../dao/mongo/products.model.js";
+import { ProductModel } from '../dao/factory.js';
+
+const productModel = new ProductModel()
 
 class ProductService {
     async getProducts({ limit, sort, page, category, available }) {
-
         try {
             const queryLimit = limit ? limit : 10;
             const queryPage = page ? page : 1
             const filter = {};
-
             if (category) { filter.category = category }
             if (available) { filter.stock = { $gt: 0 } }
 
-            return await productModel.getProducts({ queryLimit, queryPage, sort, filter })
+            const limitLink = limit ? "&limit=" + limit : "";
+            const sortLink = sort ? "&sort=" + sort : "";
+            const categoryLink = category ? "&category=" + category : "";
+            const availableLink = available ? "&available=" + available : "";
+            const productsPaginated = await productModel.getProducts({ queryLimit, queryPage, sort, filter });
+
+            const prevLink = productsPaginated.hasPrevPage ? "/products?page=" + productsPaginated.prevPage + limitLink + sortLink + categoryLink + availableLink : "";
+            const nextLink = productsPaginated.hasNextPage ? "/products?page=" + productsPaginated.nextPage + limitLink + sortLink + categoryLink + availableLink : "";
+            productsPaginated.prevLink = prevLink;
+            productsPaginated.nextLink = nextLink;
+
+            return productsPaginated
+
         }
         catch (err) {
-            return res.status(500).json({ error: 'Internal server error' });
+            throw new Error("Internal server error");
         }
-
     };
 
     async getProductById({ prodId }) {
@@ -25,7 +37,7 @@ class ProductService {
             )
         }
         catch (err) {
-            return res.status(500).json({ err: 'Internal server error' });
+            throw new Error("Internal server error");
         }
     };
 
@@ -33,7 +45,7 @@ class ProductService {
         try {
             return await productModel.createProducts({title,description, price, thumbnail, code, stock, status})
         } catch (err) {
-            return res.status(500).json({ err: 'Internal server error' });
+            throw new Error("Internal server error");
         }
     }
 
@@ -41,7 +53,7 @@ class ProductService {
         try {
             return await productModel.deleteProduct({_id : prodId});
         } catch (err) {
-            return res.status(500).json({ err: 'Internal server error' });
+            throw new Error("Internal server error");
         }
     }
     

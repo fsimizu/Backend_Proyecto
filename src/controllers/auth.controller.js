@@ -18,7 +18,8 @@ class AuthController {
             _id: req.user._id, 
             email: req.user.email, 
             firstName: req.user.firstName, 
-            isAdmin: req.user.isAdmin 
+            isAdmin: req.user.isAdmin,
+            cart : req.user.cart
         };
         return res.redirect('/products');
     }

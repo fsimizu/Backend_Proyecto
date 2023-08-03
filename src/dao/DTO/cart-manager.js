@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import { v4 as uuidv4 } from "uuid";
-import { readCartsFile, readProductsFile } from "../functions/functions.js";
+import { readCartsFile, readProductsFile } from "../../functions/functions.js";
 
 class CartManager {
     constructor(path) {

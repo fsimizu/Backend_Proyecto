@@ -1,28 +1,29 @@
-let cartId = localStorage.getItem('cartId')
+// let cartId = localStorage.getItem('cartId')
 
-const myCart = () => {
+const myCart = (cartId) => {
     window.location.href = `/carts/${cartId}`
 }
 
-if (!localStorage.getItem('cartId')) {
-    fetch('/api/carts', {
-        method: 'POST',
-        headers: {
-                   'Content-Type': 'application/json'
-        },
-    })
-    .then(response => response.json())
-    .then(data => {
-        cartId = data.payload._id;
-        localStorage.setItem('cartId', cartId);
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
-    }
+// if (!localStorage.getItem('cartId')) {
+//     fetch('/api/carts', {
+//         method: 'POST',
+//         headers: {
+//                    'Content-Type': 'application/json'
+//         },
+//     })
+//     .then(response => response.json())
+//     .then(data => {
+//         cartId = data.payload._id;
+//         localStorage.setItem('cartId', cartId);
+//     })
+//     .catch(error => {
+//         console.error('Error:', error);
+//     });
+//     }
 
-const addProductToCart = (prodId) => {
-    fetch(`/api/carts/${cartId}/product/${prodId}`, {
+
+const addProductToCart = (prodId, cartId) => {
+    fetch(`api/carts/${cartId}/product/${prodId}`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
     })
@@ -46,7 +47,7 @@ const addProductToCart = (prodId) => {
     });
 }
 
-const removeFromCart = (prodId) => {
+const removeFromCart = (prodId, cartId) => {
     Swal.fire({
         title: 'Are you sure?',
         icon: 'warning',
@@ -85,6 +86,7 @@ const updateQuery = (key, value) => {
         return newUri + separator + key + "=" + value;
     }}
 
+
 const clearQuery = (uri, key) => {
     const separator = window.location.href.indexOf('?') !== -1 ? "&" : "?";
     const re = new RegExp("([?])" + key + "=.*?(&|$)", "i");
@@ -98,40 +100,42 @@ const clearQuery = (uri, key) => {
     else return uri
 }
     
+if (window.location.href.includes('/products')) {
 
-const categories = document.getElementById("category_selection");
-categories.addEventListener("change", 
-    function (e, key, value){
-        e.preventDefault();
-        
-        if (categories.value === "all") {
-            window.location.href = clearQuery(window.location.href, "category")
-        } else {
-            window.location.href = updateQuery("category", categories.value);
-        }
-    })
+    const categories = document.getElementById("category_selection");
+    categories.addEventListener("change",
+        function (e, key, value) {
+            e.preventDefault();
 
-const sortBy = document.getElementById("sortBy");
-sortBy.addEventListener("change", 
-    function (e, key, value){
-        e.preventDefault();
-        window.location.href = updateQuery("sort", sortBy.value);
-    })
+            if (categories.value === "all") {
+                window.location.href = clearQuery(window.location.href, "category")
+            } else {
+                window.location.href = updateQuery("category", categories.value);
+            }
+        })
 
-const available = document.getElementById("availability_selection");
-available.addEventListener("change", 
-    function (e, key, value){
-        e.preventDefault();
-        if (available.value==="true") {
-            window.location.href = updateQuery("available", available.value);
-        }
-        else {
-            window.location.href = clearQuery(window.location.href, "available")
-        }
-    });
+    const sortBy = document.getElementById("sortBy");
+    sortBy.addEventListener("change",
+        function (e, key, value) {
+            e.preventDefault();
+            window.location.href = updateQuery("sort", sortBy.value);
+        })
 
+    const available = document.getElementById("availability_selection");
+    available.addEventListener("change",
+        function (e, key, value) {
+            e.preventDefault();
+            if (available.value === "true") {
+                window.location.href = updateQuery("available", available.value);
+            }
+            else {
+                window.location.href = clearQuery(window.location.href, "available")
+            }
+        });
+}
 
-function buyNow() {
+function buyNow(cartId) {
+    
     Swal.fire({
     title: 'Are you sure?',
     showCancelButton: true,
@@ -146,8 +150,28 @@ function buyNow() {
                 title: 'Your order has been submitted',
                 showConfirmButton: false,
                 timer: 1500
-              })
-              localStorage.removeItem("cartId");
+            })
+
+            fetch(`/api/carts/${cartId}/purchase`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+            })
+
+            // .then(response => response.json())
+            // .then(data => {console.log(data)});// {status: 'success', msg: 'Order completed', productsOutOfStock: true, payload: {…}}
+
+            // .then(response => response.json())
+            // .then(data => {      
+            //     if (data.productsOutOfStock) {
+            //         Swal.fire(
+                // 'The Internet?',
+                // 'That thing is still around?',
+                // 'question'
+            //             );
+            //     }
+            // })
+
+              
               setTimeout( () => window.location.href = '/products'
               , 1500 );
         }

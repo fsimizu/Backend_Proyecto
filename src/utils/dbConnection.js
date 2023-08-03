@@ -1,13 +1,14 @@
 import { connect } from "mongoose";
 import { faker } from '@faker-js/faker';
+import { ProductsMongooseModel } from "../dao/mongo/mongoose/products.mongoose.js";
 import env from '../config/environment.config.js'
 
+//aca falta singleton para que haya solo una conexion a la BBDDD.
 
 export async function connectMongo() {
     try {
       await connect(
         env.mongoUrl,
-        // "mongodb+srv://fersimizu:ZogB7pClZEtkTnny@backend.yutifmg.mongodb.net/?retryWrites=true&w=majority",
         {
           dbName: "ecommerce"
         }
@@ -16,7 +17,7 @@ export async function connectMongo() {
 
       // (async () => {
       //   const products = [];
-      //   for (let i = 0; i < 10; i++) {
+      //   for (let i = 0; i < 100; i++) {
       //     products.push({
       //       title: faker.commerce.productName(),
       //       description: faker.commerce.productDescription(),
@@ -30,8 +31,8 @@ export async function connectMongo() {
       //   }
   
       //   try {
-      //     await ProductModel.insertMany(products);
-      //     console.log('Inserted', products.length, 'users');
+      //     await ProductsMongooseModel.insertMany(products);
+      //     console.log('Inserted', products.length, 'products');
 
       //   } catch (error) {
       //     console.error('Error en insert many:', error);
