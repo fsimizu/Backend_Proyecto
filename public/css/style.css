@@ -38,6 +38,7 @@ body {
 .home__form-container {
     height: 75vh;
     width: 500px;
+    overflow-y: auto;
     border: 1px solid lightgray;
     padding: 40px;
     background-color: white;
