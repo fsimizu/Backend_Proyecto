@@ -1,8 +1,8 @@
 import { MessageMongooseModel } from "./mongoose/messages.mongoose.js";
 
-class MessageModel {
+export default class MessageModel {
   
-  creteMessage(msg) {
+  createMessage(msg) {
     return MessageMongooseModel.create(msg);
   };
 
@@ -11,5 +11,3 @@ class MessageModel {
   }
   
 }
-
-export const messageModel = new MessageModel();

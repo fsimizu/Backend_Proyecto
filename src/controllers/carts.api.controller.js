@@ -1,5 +1,6 @@
 import { cartService } from "../services/carts.service.js";
 import { orderService } from "../services/orders.service.js";
+import { emailService } from "../services/email.service.js";
 
 class CartsApiController {
 
@@ -133,8 +134,12 @@ class CartsApiController {
         try {
             const { cid: cartId } = req.params;
             const purchaser = req.session.user
+            //verificar si hay stock y break si no acepta.
+
             const { orderCreated, newCart, outOfStock } = await orderService.createOrder({ cartId, purchaser });
             req.session.user.cart = newCart._id.toString();
+            emailService.order({email: req.user.email, order: orderCreated.code});  
+
 
             return res.status(200).json({
                 status: "success",

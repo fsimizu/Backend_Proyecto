@@ -2,24 +2,11 @@ import { cartService } from "../services/carts.service.js";
 
 class CartsController {
 
-
-  //ESTE SIRVE??
-  // getId = async (req, res) => {
-  //   try {
-  //     const cartId = req.session.cid;
-  //     const { products, totalItems, totalPrice } = await cartService.getCart({ cartId });
-  //     return res.status(201).render('carts', { products, totalItems, totalPrice });
-  //   } catch (error) {
-  //     return res.status(500).render('error-products');
-  //   }
-  // }
-
   getOne = async (req, res) => {
     try {
       const cartId = req.session.user?.cart
-
-      const { products, totalItems, totalPrice } = await cartService.getCart({ cartId });
-      return res.status(201).render('carts', { products, totalItems, totalPrice, cartId });
+      const { products, totalItems, totalPrice, prodInStock } = await cartService.getCart({ cartId });
+      return res.status(201).render('carts', { products, totalItems, totalPrice, cartId, prodInStock });
     } catch (error) {
       return res.status(500).render('error-products');
     }

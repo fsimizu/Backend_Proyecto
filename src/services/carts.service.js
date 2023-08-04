@@ -17,13 +17,17 @@ class CartService {
 
         let totalItems = 0;
         let totalPrice = 0;
+        let prodInStock = 0;
         products.forEach(obj => {
             totalItems += obj.quantity;
             totalPrice += obj.product.price * obj.quantity
             obj.subtotal = obj.product.price * obj.quantity
+            if (obj.product.stock > 0) {
+                prodInStock ++
+            }
         })
 
-        return {products, totalItems, totalPrice};
+        return {products, totalItems, totalPrice, prodInStock};
     };
 
     async updateCart(cartId, prodId) {
@@ -70,7 +74,7 @@ class CartService {
             await searchedCart.save();
 
             return {
-                status: "success",
+                status: "Success",
                 msg: "Product removed from the cart",
                 payload: {}
             };

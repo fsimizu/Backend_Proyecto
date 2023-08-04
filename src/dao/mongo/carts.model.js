@@ -13,7 +13,6 @@ export default class CartModel {
   updateCart(cartId, products) {
     return CartsMongooseModel.findByIdAndUpdate(cartId, products, { new: true });
   }
-
 }
 
 // export const cartModel = new CartModel();

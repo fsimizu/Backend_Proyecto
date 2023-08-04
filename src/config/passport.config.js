@@ -3,11 +3,10 @@ import passport from 'passport';
 import GitHubStrategy from 'passport-github2';
 import local from 'passport-local';
 import { createHash, isValidPassword } from '../utils/passEncryption.js';
-import { GITHUB_SECRET } from "./env.js";
 // import jwt from 'jsonwebtoken';
 import jwt from 'passport-jwt';
-import { userService } from '../services/users.service.js';
 import { cartService } from '../services/carts.service.js';
+import { userService } from '../services/users.service.js';
 import env from './environment.config.js';
 
 const JWTStrategy = jwt.Strategy;

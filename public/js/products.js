@@ -25,26 +25,27 @@ const myCart = (cartId) => {
 const addProductToCart = (prodId, cartId) => {
     fetch(`api/carts/${cartId}/product/${prodId}`, {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
+        headers: { 'Content-Type': 'application/json' },
     })
-    .then(() => {
-        Swal.fire({
-            title: 'The product has been added to the cart',
-            icon: 'success',
-            showCancelButton: true,
-            confirmButtonText: 'Checkout',
-            cancelButtonText: `Continue shopping`,
-          })
-          .then((result) => {
-            if (result.isConfirmed) {
-                                
-                window.location.href = `/carts/${cartId}`
+        .then(() => {
+            Swal.fire({
+                title: 'The product has been added to the cart',
+                icon: 'success',
+                showCancelButton: true,
+                confirmButtonText: 'Checkout',
+                cancelButtonText: `Continue shopping`,
+            })
+                .then((result) => {
+                    if (result.isConfirmed) {
 
-            }})
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
+                        window.location.href = `/carts/${cartId}`
+
+                    }
+                })
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
 }
 
 const removeFromCart = (prodId, cartId) => {
@@ -55,23 +56,28 @@ const removeFromCart = (prodId, cartId) => {
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
         confirmButtonText: 'Yes, remove!'
-      }).then((result) => {
+    }).then((result) => {
         if (result.isConfirmed) {
             fetch(`/api/carts/${cartId}/product/${prodId}`, {
                 method: 'DELETE',
-                headers: {'Content-Type': 'application/json'},
+                headers: { 'Content-Type': 'application/json' },
             })
-            .then(response => response.json())
-            .then(data => {
-                Swal.fire(
-                    data.status,
-                    data.msg,
-                    'success'
-                    );
-                location.reload();
-            })
+                .then(response => response.json())
+                .then(data => {
+                    Swal.fire(
+                        data.status,
+                        data.msg,
+                        'success'
+                    )
+                        .then((result) => {
+                            if (result.isConfirmed) {
+                                location.reload()
+                            }
+                        })
+                        ;
+                })
         }
-      })
+    })
 }
 
 const updateQuery = (key, value) => {
@@ -84,7 +90,8 @@ const updateQuery = (key, value) => {
     }
     else {
         return newUri + separator + key + "=" + value;
-    }}
+    }
+}
 
 
 const clearQuery = (uri, key) => {
@@ -99,7 +106,7 @@ const clearQuery = (uri, key) => {
     }
     else return uri
 }
-    
+
 if (window.location.href.includes('/products')) {
 
     const categories = document.getElementById("category_selection");
@@ -135,45 +142,58 @@ if (window.location.href.includes('/products')) {
 }
 
 function buyNow(cartId) {
-    
-    Swal.fire({
-    title: 'Are you sure?',
-    showCancelButton: true,
-    confirmButtonText: 'Yes',
-    denyButtonText: `Don't save`,
+
+    fetch(`/api/carts/${cartId}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
     })
-    .then((result) => {
-        if (result.isConfirmed) {
+        .then(response => response.json())
+        .then(data => {
+            let outOfStock = false;
+            data.payload.products.forEach(prod => {
+                if (prod.product.stock === 0) { outOfStock = true }
+            });
+            let confirmMessage
+            if (outOfStock) {
+                confirmMessage = 'Some products are out of stock and will not be included in your order.'
+            }
+            else { confirmMessage = 'You are about to place the order.' }
+
+
             Swal.fire({
-                position: 'top-end',
-                icon: 'success',
-                title: 'Your order has been submitted',
-                showConfirmButton: false,
-                timer: 1500
+                title: 'Are you sure?',
+                text: confirmMessage,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                denyButtonText: `Don't save`,
             })
+                .then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Your order has been submitted',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
 
-            fetch(`/api/carts/${cartId}/purchase`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-            })
+                        fetch(`/api/carts/${cartId}/purchase`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                        })
 
-            // .then(response => response.json())
-            // .then(data => {console.log(data)});// {status: 'success', msg: 'Order completed', productsOutOfStock: true, payload: {…}}
 
-            // .then(response => response.json())
-            // .then(data => {      
-            //     if (data.productsOutOfStock) {
-            //         Swal.fire(
-                // 'The Internet?',
-                // 'That thing is still around?',
-                // 'question'
-            //             );
-            //     }
-            // })
 
-              
-              setTimeout( () => window.location.href = '/products'
-              , 1500 );
-        }
-    })
+                        setTimeout(() => window.location.href = '/products'
+                            , 1500);
+                    }
+                })
+
+
+
+        })
+
+
+
 }

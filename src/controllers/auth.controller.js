@@ -1,3 +1,5 @@
+import { emailService } from "../services/email.service.js";
+
 class AuthController {
     getSession = (req, res) => {
         return res.send(JSON.stringify(req.session));
@@ -8,11 +10,9 @@ class AuthController {
     getRegister = (_, res) => {
         return res.render('register', {});
     }
-    postRegister = (req, res) => {
+    postRegister = async (req, res) => {
         if (!req.user) {
-            return res
-                .status(400)
-                .render('error', {code: 400, msg: "The user already exists in our database"}) ;
+            return res.status(400).render('error', {code: 400, msg: "The user already exists in our database"}) ;
         }
         req.session.user = { 
             _id: req.user._id, 
@@ -21,6 +21,8 @@ class AuthController {
             isAdmin: req.user.isAdmin,
             cart : req.user.cart
         };
+        await emailService.register({email: req.user.email});       
+
         return res.redirect('/products');
     }
 
@@ -39,14 +41,6 @@ class AuthController {
         } //no llega nunca a esta linea
 
         req.session.user = req.user;
-        
-        // { 
-        //     _id: req.user._id, 
-        //     email: req.user.email, 
-        //     firstName: req.user.firstName, 
-        //     isAdmin: req.user.isAdmin 
-        // };
-
         return res.redirect('/products');
     }
 

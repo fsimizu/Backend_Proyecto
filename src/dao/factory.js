@@ -1,11 +1,12 @@
 import config from '../config/environment.config.js';
-import { connectMongo } from '../utils/dbConnection.js';
+// import { connectMongo } from '../utils/dbConnection.js';
 import MongoSingleton from '../utils/mongoSingleton.js';
 
 export let ProductModel;
 export let CartModel;
 export let OrderModel;
 export let UserModel;
+export let MessageModel;
 
 console.log(config.persistence);
 
@@ -24,6 +25,8 @@ switch (config.persistence) {
     OrderModel = OrdersMongo;
     const { default: UsersMongo } = await import('./mongo/users.model.js');
     UserModel = UsersMongo;
+    const { default: MessageMongo } = await import('./mongo/messages.model.js');
+    MessageModel = MessageMongo;
 
 
     break;
