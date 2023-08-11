@@ -3,7 +3,7 @@ import cookieParser from 'cookie-parser';
 import express from 'express';
 import handlebars from "express-handlebars";
 import session from 'express-session';
-import jwt from 'jsonwebtoken';
+// import jwt from 'jsonwebtoken';
 import passport from 'passport';
 import path from "path";
 import { __dirname } from './config.js';
@@ -18,11 +18,19 @@ import { productsApiRouter } from './routes/products.api.router.js';
 import { productsRouter } from './routes/products.router.js';
 import { usersApiRouter } from './routes/users.api.router.js';
 import { viewsRouter } from './routes/views.router.js';
-import { connectMongo } from './utils/dbConnection.js';
+// import { connectMongo } from './utils/dbConnection.js';
 import { connectSocketServer } from './utils/socketServer.js';
+import compression from "express-compression";
+import errorHandler from "./middlewares/error.js";
 
 const app = express();
 const port = env.port;
+
+app.use(
+  compression({
+    brotli: { enabled: true, zlib: {} },
+  })
+);
 // const fileStore = FileStore(session)
 
 //app.use(cors()); //esto se deberia restringir solo a la url donde se depliega el front.
@@ -38,8 +46,6 @@ connectSocketServer(httpServer);
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(cookieParser('coder-secret'));
-
-// app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static('public'));
 
 app.set("views", path.join(__dirname, "views"));
@@ -58,7 +64,7 @@ app.use(
     store: MongoStore.create({
       mongoUrl: env.mongoUrl,
       mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
-      ttl: 30,
+      ttl: 999,
       dbName: "ecommerce",
     }),
     secret: "ae5WE$gw4%HFg45w",
@@ -83,6 +89,34 @@ app.use("/products", productsRouter);
 app.use("/carts", cartsRouter);
 app.use("/chat", chatRouter);
 app.use("/auth", authRouter);
+
+
+
+//desafio mocking
+import { faker } from '@faker-js/faker';
+app.use("/mockingproducts", (req, res) => {
+  const products = [];
+  for (let i = 0; i < 100; i++) {
+    products.push({
+      title: faker.commerce.productName(),
+      description: faker.commerce.productDescription(),
+      category: faker.commerce.department(),
+      price: faker.commerce.price({ min: 1000, max: 10000 }),
+      thumbnail: faker.image.urlLoremFlickr({ category: 'food' }),
+      code: faker.string.uuid(),
+      stock: faker.commerce.price({ min: 0, max: 20, dec: 0 }),
+      status: true,
+    });
+  }
+  return res.json({ products })
+}
+);
+
+//ERROR HANDLER
+app.use(errorHandler);
+
+
+
 app.use("*", (_,res) => {
   return res.status(404).render('error', {code: 404, msg: "Site not found."})
 });

@@ -1,0 +1,11 @@
+const EErros = {
+    ROUTING_ERROR: 1,
+    INVALID_TYPES_ERROR: 2,
+    DATABASE_ERROR: 3,
+    FAIL_LOGIN_AUTH: 4,
+    FORBIDDEN_ERROR: 5,
+    MONGO_SCHEMA_VALIDATION: 6,
+    PAGE_NOT_FOUND: 7,
+  };
+  
+  export default EErros;

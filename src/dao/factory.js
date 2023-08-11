@@ -4,7 +4,7 @@ import MongoSingleton from '../utils/mongoSingleton.js';
 
 export let ProductModel;
 export let CartModel;
-export let OrderModel;
+export let TicketModel;
 export let UserModel;
 export let MessageModel;
 
@@ -21,8 +21,8 @@ switch (config.persistence) {
     ProductModel = ProductsMongo;
     const { default: CartsMongo } = await import('./mongo/carts.model.js');
     CartModel = CartsMongo;
-    const { default: OrdersMongo } = await import('./mongo/orders.model.js');
-    OrderModel = OrdersMongo;
+    const { default: TicketsMongo } = await import('./mongo/tickets.model.js');
+    TicketModel = TicketsMongo;
     const { default: UsersMongo } = await import('./mongo/users.model.js');
     UserModel = UsersMongo;
     const { default: MessageMongo } = await import('./mongo/messages.model.js');

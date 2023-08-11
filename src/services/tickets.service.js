@@ -1,12 +1,12 @@
 import { CartModel } from '../dao/factory.js';
-import { OrderModel } from '../dao/factory.js';
+import { TicketModel } from '../dao/factory.js';
 import { UserModel } from '../dao/factory.js';
 
-const orderModel = new OrderModel();
+const ticketModel = new TicketModel();
 const cartModel = new CartModel();
 const userModel = new UserModel();
 
-class OrderService {
+class TicketService {
     
     async createOrder({ cartId, purchaser }) {
 
@@ -32,10 +32,10 @@ class OrderService {
         await cartModel.updateCart({ _id: cartId }, { products: prodPurchased });
 
         //find max code and add 1
-        const lastOrder = await orderModel.getLastOrder() || 5359638;
+        const lastOrder = await ticketModel.getLastOrder() || 5359638;
         const newOrder = lastOrder + 1;
         //Crea la orden
-        const orderCreated = await orderModel.createOrder({ code: newOrder, cartId, amount, purchaser: purchaser.email });
+        const orderCreated = await ticketModel.createOrder({ code: newOrder, cartId, amount, purchaser: purchaser.email });
 
         //Crear un nuevo carrito
         const newCart = await cartModel.createCart();
@@ -52,4 +52,4 @@ class OrderService {
 
 }
 
-export const orderService = new OrderService()
+export const ticketService = new TicketService()

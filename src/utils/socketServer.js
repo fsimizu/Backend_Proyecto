@@ -21,6 +21,7 @@ export function connectSocketServer(httpServer) {
       } catch (e) {
         console.log(e);
       }
+      
       try {
         const msgs = await chatService.findAllMessages();
         socketServer.emit("listado_de_msgs", msgs);

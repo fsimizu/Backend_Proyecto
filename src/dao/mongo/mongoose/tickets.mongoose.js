@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 
-const orderSchema = new Schema({
+const ticketSchema = new Schema({
     code: { type: Number, default: 0, required: true }, //cartId?? - este deberia ser un numero sequencial. como hacerlo?
     cart:{
       type: Schema.Types.ObjectId,
@@ -15,4 +15,4 @@ const orderSchema = new Schema({
     }
   });
 
-export const OrdersMongooseModel = model("orders", orderSchema);
+export const TicketsMongooseModel = model("tickets", ticketSchema);

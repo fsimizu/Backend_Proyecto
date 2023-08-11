@@ -8,7 +8,8 @@ class CartsController {
       const { products, totalItems, totalPrice, prodInStock } = await cartService.getCart({ cartId });
       return res.status(201).render('carts', { products, totalItems, totalPrice, cartId, prodInStock });
     } catch (error) {
-      return res.status(500).render('error-products');
+      return res.status(500).render('error', {code: 500, msg: "Error retrieving the cart"}); 
+      
     }
   }
 
@@ -18,7 +19,7 @@ class CartsController {
       const response = await cartService.updateCart(cartId, prodId);
       return res.status(200).json(response);
     } catch (error) {
-      return res.status(500).render('error-products');
+      return res.status(500).render('error', {code: 500, msg: "Error posting the cart"});
     }
   }
 

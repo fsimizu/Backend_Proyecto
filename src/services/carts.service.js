@@ -68,8 +68,11 @@ class CartService {
 
     async clearOne(cartId, prodId) {
         try {
-            const searchedCart = await cartModel.getCart({_id: cartId});
-            await productModel.getProductById({ _id: prodId }) //sirve para saber si existe el producto
+            // const searchedCart = await cartModel.getCart({_id: cartId});
+            // await productModel.getProductById({ _id: prodId }) //sirve para saber si existe el producto
+            //forma mas rapida de hacerlo (2X)
+            const [searchedCart, searchedProduct] = await Promise.all([cartModel.getCart({_id: cartId}), productModel.getProductById({ _id: prodId })])
+
             searchedCart.products = searchedCart.products.filter(obj => obj.product._id.toString() !== prodId);
             await searchedCart.save();
 

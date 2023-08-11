@@ -1,5 +1,5 @@
 import { cartService } from "../services/carts.service.js";
-import { orderService } from "../services/orders.service.js";
+import { ticketService } from "../services/tickets.service.js";
 import { emailService } from "../services/email.service.js";
 
 class CartsApiController {
@@ -136,7 +136,7 @@ class CartsApiController {
             const purchaser = req.session.user
             //verificar si hay stock y break si no acepta.
 
-            const { orderCreated, newCart, outOfStock } = await orderService.createOrder({ cartId, purchaser });
+            const { orderCreated, newCart, outOfStock } = await ticketService.createOrder({ cartId, purchaser });
             req.session.user.cart = newCart._id.toString();
             emailService.order({email: req.user.email, order: orderCreated.code});  
 
