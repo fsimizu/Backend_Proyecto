@@ -8,6 +8,7 @@ import jwt from 'passport-jwt';
 import { cartService } from '../services/carts.service.js';
 import { userService } from '../services/users.service.js';
 import env from './environment.config.js';
+import { logger } from '../utils/logger.js';
 
 const JWTStrategy = jwt.Strategy;
 const ExtractJWT = jwt.ExtractJwt;
@@ -28,21 +29,20 @@ export function iniPassport() {
         'login',
         new LocalStrategy({ usernameField: 'email' }, async (username, password, done) => {
             try {
-                // const user = await UserModel.findOne({ email: username });
                 const user = await userService.getUserByEmail(username);
-                console.log(user)
+                logger.debug(user);
                 if (!user) {
-                    console.log('User Not Found with email ' + username);
+                    logger.warn('User Not Found with email ' + username);
                     return done(null, false);
                 }
                 if (!isValidPassword(password, user.password)) {
-                    console.log('Invalid Password');
+                    logger.warn('Invalid Password');
                     return done(null, false);
                 }
                 delete user.password; //verificar que esta borrando el password - no lo esta borrando
                 return done(null, user);
             } catch (err) {
-                console.log('error aca')
+                logger.error(err);
                 return done(err);
             }
         })
@@ -62,7 +62,7 @@ export function iniPassport() {
                     let user = await userService.getUserByEmail(username);
 
                     if (user) {
-                        console.log('User already exists');
+                        logger.warn('User already exists')
                         return done(null, false);
                     }
 
@@ -80,13 +80,11 @@ export function iniPassport() {
                     };
 
                     let userCreated = await userService.createUsers(newUser);
-
-                    console.log(userCreated);
-                    console.log('User Registration succesful');
+                    logger.info('User Registration succesful');
+                    logger.debug(userCreated)
                     return done(null, userCreated);
                 } catch (e) {
-                    console.log('Error in register');
-                    console.log(e);
+                    logger.error(e)
                     return done(e);
                 }
             }
@@ -136,15 +134,14 @@ export function iniPassport() {
                         };
 
                         let userCreated = await userService.createUsers(newUser);
-                        console.log('User Registration succesful');
+                        logger.info('User Registration succesful')
                         return done(null, userCreated);
                     } else {
-                        console.log('User already exists');
+                        logger.info('User already exists');
                         return done(null, user);
                     }
                 } catch (e) {
-                    console.log('Error en auth github');
-                    console.log(e);
+                    logger.error('Error en auth github', e)
                     return done(e);
                 }
             }

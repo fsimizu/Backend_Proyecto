@@ -1,6 +1,6 @@
 import config from '../config/environment.config.js';
-// import { connectMongo } from '../utils/dbConnection.js';
 import MongoSingleton from '../utils/mongoSingleton.js';
+import { logger } from '../utils/logger.js';
 
 export let ProductModel;
 export let CartModel;
@@ -8,11 +8,9 @@ export let TicketModel;
 export let UserModel;
 export let MessageModel;
 
-console.log(config.persistence);
-
 switch (config.persistence) {
   case 'MONGO':
-    console.log('Persistence with Mongo');
+    logger.info('Persistence with Mongo');
     
     MongoSingleton.getInstance()
     // connectMongo();
@@ -32,7 +30,7 @@ switch (config.persistence) {
     break;
     
   case 'MEMORY':
-    console.log('Persistence with Memory');
+    logger.info('Persistence with Memory');
     // const { default: ContactsMemory } = await import('./memory/contacts.memory.js');
     // Contacts = ContactsMemory;
 

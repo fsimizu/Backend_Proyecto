@@ -1,6 +1,7 @@
 import CustomError from "../services/errors/custom-error.js";
 import EErros from "../services/errors/enums.js";
 import { productService } from "../services/products.service.js";
+import { logger } from "../utils/logger.js";
 
 class ProductsApiController {
     getAll = async (req, res) => {
@@ -16,7 +17,7 @@ class ProductsApiController {
             const nextLink = products.hasNextPage ? "/api/products?page=" + products.nextPage + limitLink + sortLink + categoryLink + availableLink : "";
 
             if (products.page > products.totalPages) {
-                
+                req.logger.warn(e);
                 CustomError.createError({
                     name: "Page not found",
                     cause: "The page in the param is greater than the total number of pages",
@@ -47,6 +48,7 @@ class ProductsApiController {
             });
 
         } catch (e) {
+            req.logger.error(e);
             return res.status(500).json({
                 status: "error",
                 errorCode: e.code,
@@ -69,6 +71,7 @@ class ProductsApiController {
             });
 
         } catch (error) {
+            req.logger.error(e);
             return res.status(500).json({
                 status: "error",
                 msg: "something went wrong :(",
@@ -81,7 +84,7 @@ class ProductsApiController {
         try {
             const { title, description, price, thumbnail, code, stock, status } = req.body;
             if (!title || !description || !price || !thumbnail || !code || !stock || !status) {
-                console.log("validation error: all fields are mandatory");
+                logger.warn("validation error: all fields are mandatory");
                 return res.status(400).json({
                     status: "error",
                     msg: "please complete the required fields.",
@@ -104,6 +107,7 @@ class ProductsApiController {
                 }
             });
         } catch (e) {
+            req.logger.error(e);
             return res.status(500).json({
                 status: "error",
                 msg: "something went wrong :(",
@@ -124,6 +128,7 @@ class ProductsApiController {
             });
 
         } catch (error) {
+            req.logger.error(error);
             return res.status(500).json({
                 status: "error",
                 msg: "something went wrong :(",
@@ -150,6 +155,7 @@ class ProductsApiController {
             }
 
         } catch (error) {
+            req.logger.error(e);
             return res.status(500).json({
                 status: "error",
                 msg: "something went wrong :(",

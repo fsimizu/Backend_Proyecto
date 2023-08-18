@@ -2,6 +2,7 @@ import { connect } from "mongoose";
 import { faker } from '@faker-js/faker';
 import { ProductsMongooseModel } from "../dao/mongo/mongoose/products.mongoose.js";
 import env from '../config/environment.config.js'
+import { logger } from "./logger.js";
 
 //aca falta singleton para que haya solo una conexion a la BBDDD.
 
@@ -13,7 +14,7 @@ export async function connectMongo() {
           dbName: "ecommerce"
         }
       );
-      console.log("plugged to mongo!");
+      logger.info("plugged to mongo!")
 
       // (async () => {
       //   const products = [];
@@ -41,7 +42,7 @@ export async function connectMongo() {
 
 
     } catch (e) {
-      console.log(e);
+      logger.error(e)
       throw "cannot connect to the db";
     }
   }

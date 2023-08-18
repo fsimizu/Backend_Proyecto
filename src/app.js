@@ -22,9 +22,27 @@ import { viewsRouter } from './routes/views.router.js';
 import { connectSocketServer } from './utils/socketServer.js';
 import compression from "express-compression";
 import errorHandler from "./middlewares/error.js";
+import { logger, addLogger } from './utils/logger.js';
 
 const app = express();
 const port = env.port;
+
+app.use(addLogger);
+
+
+
+app.get("/loggertest", (req, res) => {
+  req.logger.silly("log de un silly");
+  req.logger.debug("log de un debug");
+  req.logger.info("log de una info");
+  req.logger.warn("log de una wart");
+  req.logger.error("log de una error");
+  
+  return res.json("testing")
+});
+
+
+
 
 app.use(
   compression({
@@ -36,10 +54,9 @@ app.use(
 //app.use(cors()); //esto se deberia restringir solo a la url donde se depliega el front.
 
 const httpServer = app.listen(port, () => {
-  console.log(`Example app listening on port http://localhost:${port}`);
+  logger.info(`Example app listening on port http://localhost:${port}`);
 })
 
-//connectMongo(); //cuando uso la factory esta linea no va mas.
 connectSocketServer(httpServer);
 
 //CONFIG EXPRESS

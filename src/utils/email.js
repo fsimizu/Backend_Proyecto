@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import { logger } from "./logger.js";
 
 const transport = nodemailer.createTransport({
     service: "gmail",
@@ -23,7 +24,7 @@ export async function registerEmail({ recipient }) {
                   </div>
               `,
     });
-    // console.log(result);
+    logger.debug(result);
     return result
 }
 
@@ -57,6 +58,6 @@ export async function sendSms() {
         to: "+61434830695",
         body: "que onda che",
     });
-
-    console.log(result);
+    
+    logger.debug(result);
 }

@@ -2,6 +2,7 @@ import { userService } from "../services/users.service.js";
 import CustomError from "../services/errors/custom-error.js";
 import EErros from "../services/errors/enums.js";
 import { generateUserErrorInfo } from "../services/errors/info.js";
+import { logger } from "../utils/logger.js";
 
 class UserController {
 
@@ -15,7 +16,7 @@ class UserController {
                 payload: users,
             });
         } catch (e) {
-            console.log(e);
+            logger.error(e);
             return res.status(500).json({
                 status: "error",
                 errorCode: e.code,
@@ -125,7 +126,7 @@ class UserController {
                 payload: {},
             });
         } catch (e) {
-            console.log(e);
+            logger.error(e);
             return res.status(500).json({
                 status: "error",
                 msg: "something went wrong :(",
