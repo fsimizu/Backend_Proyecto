@@ -1,8 +1,9 @@
 class ChatController {
 
-get = async (_, res) => {
+get = async (req, res) => {
     try {
-        return res.status(201).render('chat', {});
+        const { email } = req.session.user
+        return res.status(201).render('chat', {email});
     } catch (error) {
         return res.status(500).render('error', {code: 500, msg: "Server error"});
         

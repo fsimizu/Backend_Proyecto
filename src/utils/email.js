@@ -1,5 +1,6 @@
 import nodemailer from "nodemailer";
 import { logger } from "./logger.js";
+import env from '../config/environment.config.js'
 
 const transport = nodemailer.createTransport({
     service: "gmail",
@@ -43,6 +44,31 @@ export async function orderEmail({ recipient, order }) {
     });
     return result
 }
+
+export async function recoverEmail({ recipient, token }) {
+    const result = await transport.sendMail({
+        from: process.env.GOOGLE_EMAIL,
+        to: recipient,
+        subject: `Password recovery`,
+        html: `
+                  <div>
+                      <h3>Forgot your password?</h3>
+                      <p>We received a request to reset the password for your account.</p>
+                      <p>To reset your password, click on the button below</p>
+
+                      <a href="${env.apiUrl}/auth/pass-change?token=${token}&email=${recipient}"><button>Reset password</button></a>	
+
+                      <p>or copy and paste the link below in your browser</p>
+                      <p>${env.apiUrl}/auth/pass-change?token=${token}&email=${recipient}</p>
+
+                      <p>The link will expire in 1 hour.</p>
+
+                  </div>
+              `,
+    });
+    return result
+}
+
 
 //--------------------TWILIO----------------------------
 import twilio from "twilio";

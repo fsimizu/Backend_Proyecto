@@ -16,15 +16,11 @@ authRouter.get('/login', authController.getLogin);
 authRouter.post('/login', passport.authenticate('login', { failureRedirect: '/auth/faillogin' }), authController.postLogin);
 authRouter.get('/faillogin', authController.getFailLogin);
 
-//github
-// authRouter.get('/github', passport.authenticate('github', { scope: ['user:email'] }));
-// authRouter.get('/githubcallback', passport.authenticate('github', { failureRedirect: '/auth/error' }), 
-//     (req, res) => {
-//         req.session.user = req.user;
-//         res.redirect('/products');
-//     });
-
 authRouter.get('/logout', authController.getLogout);
 authRouter.get('/perfil', isUser, authController.getProfile);
 authRouter.get('/administracion', isUser, isAdmin, authController.getAdmin);
 authRouter.get('/error', authController.getError);
+
+authRouter.post('/pass-recovery', authController.postRecovery);
+authRouter.get('/pass-change', authController.getRecovery);
+authRouter.post('/pass-change', authController.passReset);

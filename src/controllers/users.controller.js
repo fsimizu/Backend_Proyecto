@@ -135,6 +135,30 @@ class UserController {
         }
     }
 
+
+    switchRole = async (req, res) => {
+        try {
+            const { _id } = req.params;
+            const { role } = await userService.switchRole(_id);
+
+            return res.status(200).json({
+                status: "success",
+                msg: `user ${_id} has now a role ${role}`,
+                payload: {},
+            });
+
+        } catch (e) {
+            logger.error('Error in the user controller. ' + e.message);
+            return res.status(500).json({
+                status: "error",
+                errorCode: e.code,
+                errorName: e.name,
+                errorMessage: e.message,
+                errorCause: e.cause,
+            });
+        }
+    }
+
 }
 
 export const userController = new UserController();

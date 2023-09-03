@@ -1,7 +1,7 @@
 {{!-- https://mdbootstrap.com/docs/standard/extended/chat/ --}}
 
 <section>
-
+<div style="display: none" id="user">{{email}}</div>
   <div class="container py-5" style="height: 100vh">
     <div class="row d-flex justify-content-center" style="height: 100%">
       <div class="col-md-8 col-lg-6 col-xl-4" style="height: 100%">
@@ -18,30 +18,11 @@
           <div class="card-body"
             style="border-radius: 15px; height: 100%; overflow-y: scroll; display: flex; flex-direction: column-reverse">
 
-            {{!-- <div class="d-flex flex-row justify-content-start mb-4">
-              <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp" alt="avatar 1"
-                style="width: 45px; height: 100%;">
-              <div class="p-3 ms-3" style="border-radius: 15px; background-color: rgba(57, 192, 237,.2);">
-                <p class="small mb-0">Loading...</p>
-              </div>
-            </div> --}}
-
-            {{!--
-            <div class="d-flex flex-row justify-content-end mb-4">
-              <div class="p-3 me-3 border" style="border-radius: 15px; background-color: #fbfbfb;">
-                <p class="small mb-0">Thank you, I really like your product.</p>
-              </div>
-              <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava2-bg.webp" alt="avatar 1"
-                style="width: 45px; height: 100%;">
-            </div> --}}
-
             <div id="div-msgs">
               Loading...
             </div>
 
-
           </div>
-
           <div class="card-body form-outline">
             <label class="form-label" for="textAreaExample">Type your message below</label>
             <textarea id="input-msg" class="form-control" id="textAreaExample" rows="4"></textarea>

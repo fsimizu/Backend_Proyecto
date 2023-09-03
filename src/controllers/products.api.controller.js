@@ -82,8 +82,9 @@ class ProductsApiController {
 
     postOne = async (req, res) => {
         try {
-            const { title, description, price, thumbnail, code, stock, status } = req.body;
-            if (!title || !description || !price || !thumbnail || !code || !stock || !status) {
+            const { title, description, category, price, thumbnail, code, stock } = req.body;
+            const { email } = req.session.user;
+            if (!title || !description || !category || !price || !thumbnail || !code || !stock ) {
                 logger.warn("validation error: all fields are mandatory");
                 return res.status(400).json({
                     status: "error",
@@ -91,7 +92,7 @@ class ProductsApiController {
                     payload: {},
                 });
             }
-            const prodCreated = await productService.createProducts({ title, description, price, thumbnail, code, stock, status });
+            const prodCreated = await productService.createProducts({ title, description, category, price, thumbnail, code, stock });
             return res.status(201).json({
                 status: "success",
                 msg: "product created",
@@ -99,15 +100,16 @@ class ProductsApiController {
                     _id: prodCreated._id,
                     title: prodCreated.title,
                     description: prodCreated.description,
+                    category: prodCreated.category,
                     price: prodCreated.price,
                     thumbnail: prodCreated.thumbnail,
                     code: prodCreated.code,
                     stock: prodCreated.stock,
-                    stock: prodCreated.stock
+                    owner: email
                 }
             });
         } catch (e) {
-            req.logger.error(e);
+            logger.error("Error calling the products service. " + e);
             return res.status(500).json({
                 status: "error",
                 msg: "something went wrong :(",
@@ -122,13 +124,13 @@ class ProductsApiController {
             await productService.deleteProduct({ prodId });
 
             return res.status(200).json({
-                status: "success",
+                status: "Success",
                 msg: "Product deleted",
                 payload: {}
             });
 
         } catch (error) {
-            req.logger.error(error);
+            logger.error(error);
             return res.status(500).json({
                 status: "error",
                 msg: "something went wrong :(",
@@ -140,8 +142,8 @@ class ProductsApiController {
     editOne = async (req, res) => {
         try {
             const prodId = req.params.pid;
-            const { title, description, price, thumbnail, code, stock, status } = req.body;
-            const updatedProduct = await productService.updateProduct({ _id: prodId, title, description, price, thumbnail, code, stock, status });
+            const { title, description, price, thumbnail, code, stock } = req.body;
+            const updatedProduct = await productService.updateProduct({ _id: prodId, title, description, price, thumbnail, code, stock });
 
             if (updatedProduct.matchedCount) {
                 return res.status(201).json({
@@ -149,7 +151,7 @@ class ProductsApiController {
                     msg: "user updated",
                     payload: {
                         _id: prodId,
-                        modified: [{ title, description, price, thumbnail, code, stock, status }]
+                        modified: [{ title, description, price, thumbnail, code, stock }]
                     }
                 });
             }

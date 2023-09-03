@@ -7,6 +7,7 @@ export let CartModel;
 export let TicketModel;
 export let UserModel;
 export let MessageModel;
+export let TokenModel;
 
 switch (config.persistence) {
   case 'MONGO':
@@ -25,6 +26,9 @@ switch (config.persistence) {
     UserModel = UsersMongo;
     const { default: MessageMongo } = await import('./mongo/messages.model.js');
     MessageModel = MessageMongo;
+    const { default: TokenMongo } = await import('./mongo/token.model.js');
+    TokenModel = TokenMongo;
+
 
 
     break;

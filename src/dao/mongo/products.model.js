@@ -1,4 +1,5 @@
 import { ProductsMongooseModel } from "./mongoose/products.mongoose.js";
+import { logger } from "../../utils/logger.js";
 
 export default class ProductModel {
 
@@ -17,6 +18,7 @@ export default class ProductModel {
                 description: true,
                 price: true,
                 thumbnail: true,
+                category: true,
                 code: true,
                 stock: true,
                 status: true,
@@ -28,12 +30,18 @@ export default class ProductModel {
         return ProductsMongooseModel.distinct('category');
     }
 
-    createProducts({title,description, price, thumbnail, code, stock, status}) {
-        return ProductsMongooseModel.create({title,description, price, thumbnail, code, stock, status});
+    async createProducts({ title, description, category, price, thumbnail, code, stock, status, email }) {
+        try {
+            const newProd = await ProductsMongooseModel.create({ title, description, category, price, thumbnail, code, stock, status, owner: email })
+            return newProd
+        } catch (e) {
+            logger.error('Error creating the product ' + e);
+            throw new Error(e);
+        }
     }
 
-    deleteProduct({prodId}) {
-        return ProductsMongooseModel.deleteOne({_id : prodId});
+    deleteProduct({ _id }) {
+        return ProductsMongooseModel.deleteOne({_id: _id});
     }
 
     updateProduct ( { _id, title, description, price, thumbnail, code, stock, status } ) {

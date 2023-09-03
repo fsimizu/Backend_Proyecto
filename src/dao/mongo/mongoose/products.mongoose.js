@@ -9,6 +9,7 @@ const schema = new Schema({
   price: { type: Number, required: true },
   stock: { type: Number, required: true },
   thumbnail: { type: String, required: true },
+  owner: { type: String , default: "admin" },
 });
 
 schema.plugin(mongoosePaginate);

@@ -29,27 +29,20 @@ const port = env.port;
 
 app.use(addLogger);
 
-
-
 app.get("/loggertest", (req, res) => {
   req.logger.silly("log de un silly");
   req.logger.debug("log de un debug");
   req.logger.info("log de una info");
-  req.logger.warn("log de una wart");
+  req.logger.warn("log de una warn");
   req.logger.error("log de una error");
-  
   return res.json("testing")
 });
-
-
-
 
 app.use(
   compression({
     brotli: { enabled: true, zlib: {} },
   })
 );
-// const fileStore = FileStore(session)
 
 //app.use(cors()); //esto se deberia restringir solo a la url donde se depliega el front.
 
@@ -107,8 +100,6 @@ app.use("/carts", cartsRouter);
 app.use("/chat", chatRouter);
 app.use("/auth", authRouter);
 
-
-
 //desafio mocking
 import { faker } from '@faker-js/faker';
 app.use("/mockingproducts", (req, res) => {
@@ -122,7 +113,6 @@ app.use("/mockingproducts", (req, res) => {
       thumbnail: faker.image.urlLoremFlickr({ category: 'food' }),
       code: faker.string.uuid(),
       stock: faker.commerce.price({ min: 0, max: 20, dec: 0 }),
-      status: true,
     });
   }
   return res.json({ products })
@@ -132,14 +122,9 @@ app.use("/mockingproducts", (req, res) => {
 //ERROR HANDLER
 app.use(errorHandler);
 
-
-
 app.use("*", (_,res) => {
   return res.status(404).render('error', {code: 404, msg: "Site not found."})
 });
-
-
-
 
 // const SECRET = 'coderSecret';
 // app.use('/api/jwt-login', (req, res) => {

@@ -7,4 +7,5 @@ usersApiRouter.get("/", /*isAdmin,*/ userController.getAll);
 usersApiRouter.post("/", /*isAdmin,*/ userController.postOne);
 usersApiRouter.put("/:_id", /*isAdmin,*/ userController.editOne);
 usersApiRouter.delete("/:_id", isAdmin, userController.deleteOne);
+usersApiRouter.get("/premium/:_id", /*isAdmin,*/ userController.switchRole);
 

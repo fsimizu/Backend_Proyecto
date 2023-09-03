@@ -1,0 +1,18 @@
+<div class="home__container">
+    <div class="recovery__form-container">
+        <h3 class="home__title">Trouble logging in?</h3>
+        <form action="/auth/pass-recovery" method="post">
+            <hr>
+            <div class="form-group">
+                <label for="registerEmail">
+                    Enter your email and we'll send you a link to get back into your account.
+                </label>
+                <input type="email" class="form-control" id="registerEmail" name="email"
+                    aria-describedby="emailHelp" placeholder="Enter email" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Recover password</button>
+        </form>
+        <br>
+        <a href="/"><button class="btn btn-secondary">Back to login</button></a>
+    </div>
+</div>

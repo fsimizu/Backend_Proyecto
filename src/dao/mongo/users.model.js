@@ -20,8 +20,10 @@ export default class UserModel {
         email: true,
         firstName: true,
         isAdmin: true,
+        role: true,
         password: true,
-        cart: true
+        cart: true,
+      
       });
   }
 
@@ -37,6 +39,16 @@ export default class UserModel {
     return UserMongooseModel.updateOne(
       { _id: _id },
       { firstName, lastName, email }
+    )
+  }
+
+  updatePassword({ email, password }) {
+
+    console.log('en el modelo ', email, password);
+    
+    return UserMongooseModel.updateOne(
+      { email: email },
+      { password }
     )
   }
 

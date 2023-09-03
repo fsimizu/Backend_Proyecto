@@ -189,11 +189,5 @@ function buyNow(cartId) {
                             , 1500);
                     }
                 })
-
-
-
         })
-
-
-
 }

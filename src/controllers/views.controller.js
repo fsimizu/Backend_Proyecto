@@ -23,6 +23,17 @@ class ViewsController {
     getJwt = (_, res) => {
         return res.render('jwt-login');
     }
+    getRecovery = (_, res) => {
+        return res.status(201).render('pass-recovery');
+    };
+    
+    getChange = (req, res) => {
+        const { code, email } = req.params;
+        console.log(code, email);
+        return res.status(201).render('pass-change');
+    };
+    
+
 }
 
 export const viewsController = new ViewsController();
