@@ -10,36 +10,38 @@ class CartService {
         return await cartModel.createCart({});
     };
 
-    async getCart({cartId}) {
-        const searchedCart = await cartModel.getCart({_id: cartId});
+    async getCart({ cartId }) {
+        try {
+            const searchedCart = await cartModel.getCart({ _id: cartId });
+            const products = searchedCart.products;
+            let totalItems = 0;
+            let totalPrice = 0;
+            let prodInStock = 0;
+            products.forEach(obj => {
+                totalItems += obj.quantity;
+                totalPrice += obj.product?.price * obj.quantity || 0
+                obj.subtotal = obj.product?.price * obj.quantity || 0
+                if (obj.product?.stock > 0) {
+                    prodInStock++
+                }
+            })
+            return { products, totalItems, totalPrice, prodInStock };
+        } catch (error) {
+            throw new Error('Error in the cartService.getCart().' + error)
+        }
 
-        const products = searchedCart.products;
-
-        let totalItems = 0;
-        let totalPrice = 0;
-        let prodInStock = 0;
-        products.forEach(obj => {
-            totalItems += obj.quantity;
-            totalPrice += obj.product.price * obj.quantity
-            obj.subtotal = obj.product.price * obj.quantity
-            if (obj.product.stock > 0) {
-                prodInStock ++
-            }
-        })
-
-        return {products, totalItems, totalPrice, prodInStock};
     };
 
     async updateCart(cartId, prodId) {
         try {
-            const searchedCart = await cartModel.getCart({_id: cartId});
+            const searchedCart = await cartModel.getCart({ _id: cartId });
 
             let existing = false;
             searchedCart.products.forEach((prod) => {
                 if (prod.product._id == prodId) { existing = true; }
             });
             let prodIndex = searchedCart.products.findIndex((prod) => prod.product._id == prodId);
-            
+
             if (existing) {
                 searchedCart.products[prodIndex].quantity++;
             } else {
@@ -62,7 +64,7 @@ class CartService {
                 msg: "Cart or product not found",
                 payload: {}
             }
-            }; 
+        };
 
     }
 
@@ -71,7 +73,7 @@ class CartService {
             // const searchedCart = await cartModel.getCart({_id: cartId});
             // await productModel.getProductById({ _id: prodId }) //sirve para saber si existe el producto
             //forma mas rapida de hacerlo (2X)
-            const [searchedCart, searchedProduct] = await Promise.all([cartModel.getCart({_id: cartId}), productModel.getProductById({ _id: prodId })])
+            const [searchedCart, searchedProduct] = await Promise.all([cartModel.getCart({ _id: cartId }), productModel.getProductById({ _id: prodId })])
 
             searchedCart.products = searchedCart.products.filter(obj => obj.product._id.toString() !== prodId);
             await searchedCart.save();
@@ -91,20 +93,20 @@ class CartService {
         }
     }
 
-    async clearCart({cartId}){
+    async clearCart({ cartId }) {
         try {
-            const searchedCart = await cartModel.getCart({_id: cartId});
+            const searchedCart = await cartModel.getCart({ _id: cartId });
             searchedCart.products = [];
             await searchedCart.save();
             return searchedCart;
         } catch (error) {
-            throw new Error ('Cart not found')
+            throw new Error('Cart not found')
         }
     }
 
-    async updateQuantity(cartId, prodId, quantity){
+    async updateQuantity(cartId, prodId, quantity) {
         try {
-            const cart = await cartModel.findOne({_id: cartId});
+            const cart = await cartModel.findOne({ _id: cartId });
             const prodIndex = cart.products.findIndex((obj) => obj.product._id.toString() === prodId)
             if (prodIndex === -1) {
                 throw new Error('Product not found')
@@ -113,17 +115,17 @@ class CartService {
             await cart.save()
             return cart;
         } catch (error) {
-            throw new Error ('Error updating the cart')
+            throw new Error('Error updating the cart')
         }
     }
 
-    async createOrder( {cartId} ){
+    async createOrder({ cartId }) {
         try {
-            const cart = await cartModel.findOne({_id: cartId});
+            const cart = await cartModel.findOne({ _id: cartId });
             await cart.save()
             return cart;
         } catch (error) {
-            throw new Error ('Error updating the cart')
+            throw new Error('Error updating the cart')
         }
     }
 

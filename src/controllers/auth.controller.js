@@ -20,7 +20,8 @@ class AuthController {
             email: req.user.email,
             firstName: req.user.firstName,
             isAdmin: req.user.isAdmin,
-            cart: req.user.cart
+            cart: req.user.cart,
+            role: req.user.role,
         };
         await emailService.register({ email: req.user.email });
 
@@ -30,7 +31,7 @@ class AuthController {
     getFailRegister = async (_, res) => {
         return res
             .status(400)
-            .render('error', { code: 400, msg: "Failed to register the user" });
+            .render('error', { code: 400, msg: "Failed to register the user. User already exists" });
     }
 
     postLogin = async (req, res) => {

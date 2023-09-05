@@ -129,3 +129,17 @@ body {
 .recovery__form-container label {
     margin-bottom: 10px;
 }
+
+.card-img-top {
+    height: 170px;
+    background-color: lightgray;
+}
+.card {
+    position: relative;
+}
+.btn-editProduct {
+    position: absolute;
+    opacity: 0.8;
+    left: 10px;
+    top: 10px;
+}

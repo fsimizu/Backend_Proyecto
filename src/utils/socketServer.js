@@ -7,7 +7,7 @@ export function connectSocketServer(httpServer) {
 
   socketServer.on('connection', async socket => {
     
-    logger.info("Nuevo cliente conectado")
+    logger.info("New client connected to the chat")
     try {
       const msgs = await chatService.findAllMessages();
       socketServer.emit("listado_de_msgs", msgs);

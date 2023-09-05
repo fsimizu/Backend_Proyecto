@@ -80,22 +80,30 @@
                 <div class="container products__container">
                   {{#each products}}
                   <div class="card" style="width: 16rem;">
-                    <img src="{{this.thumbnail}}" class="card-img-top" alt="...">
+
+                      {{#if ../isAdmin }}
+                      <a class="btn btn-secondary btn-editProduct" href="./products/edit/{{this._id}}">Edit/Delete</a>
+                      {{else}}
+                        {{#if this.isOwnProduct }}
+                        <a class="btn btn-secondary btn-editProduct" href="./products/edit/{{this._id}}">Edit/Delete</a>
+                        {{/if}}
+                      {{/if}}
+
+                    <img src="{{this.thumbnail}}" class="card-img-top" alt="">
+
                     <div class="card-body">
                       <h4 class="card-title">ARS$ {{this.price}}</h4>
                       <h5 class="card-title">{{this.title}}</h5>
                       <p class="card-text">{{this.description}}</p>
 
                       {{#if ../isAdmin }}
-                        <a class="btn btn-primary btn-addToCart"
-                          onclick="addProductToCart('{{this._id}}', '{{../cart}}')">Add to Cart</a>
-                        <a class="btn btn-danger btn-editProduct" href="./products/edit/{{this._id}}">Edit/Delete product</a>
+                      <a class="btn btn-primary btn-addToCart"
+                        onclick="addProductToCart('{{this._id}}', '{{../cart}}')">Add to Cart</a>
                       {{else}}
                         {{#if this.isOwnProduct }}
-                          <a class="btn btn-danger btn-editProduct" href="./products/edit/{{this._id}}">Edit/Delete product</a>
                         {{else}}
-                          <a class="btn btn-primary btn-addToCart"
-                            onclick="addProductToCart('{{this._id}}', '{{../cart}}')">Add to Cart</a>
+                        <a class="btn btn-primary btn-addToCart"
+                          onclick="addProductToCart('{{this._id}}', '{{../cart}}')">Add to Cart</a>
                         {{/if}}
                       {{/if}}
 

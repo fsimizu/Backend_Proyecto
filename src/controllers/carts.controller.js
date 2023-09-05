@@ -1,4 +1,5 @@
 import { cartService } from "../services/carts.service.js";
+import { logger } from "../utils/logger.js";
 
 class CartsController {
 
@@ -8,8 +9,8 @@ class CartsController {
       const { products, totalItems, totalPrice, prodInStock } = await cartService.getCart({ cartId });
       return res.status(201).render('carts', { products, totalItems, totalPrice, cartId, prodInStock });
     } catch (error) {
+      logger.error('Error calling the cartService. ' + error)
       return res.status(500).render('error', {code: 500, msg: "Error retrieving the cart"}); 
-      
     }
   }
 

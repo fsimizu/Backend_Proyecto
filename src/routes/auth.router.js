@@ -21,6 +21,7 @@ authRouter.get('/perfil', isUser, authController.getProfile);
 authRouter.get('/administracion', isUser, isAdmin, authController.getAdmin);
 authRouter.get('/error', authController.getError);
 
+//recover password
 authRouter.post('/pass-recovery', authController.postRecovery);
 authRouter.get('/pass-change', authController.getRecovery);
 authRouter.post('/pass-change', authController.passReset);
