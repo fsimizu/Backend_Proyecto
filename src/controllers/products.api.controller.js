@@ -17,14 +17,14 @@ class ProductsApiController {
             const nextLink = products.hasNextPage ? "/api/products?page=" + products.nextPage + limitLink + sortLink + categoryLink + availableLink : "";
 
             if (products.page > products.totalPages) {
-                req.logger.warn(e);
+                
                 CustomError.createError({
                     name: "Page not found",
                     cause: "The page in the param is greater than the total number of pages",
                     message: "The page requested does not exist",
                     code: EErros.INVALID_TYPES_ERROR,
                 });
-                
+            
                 // return res.status(404).json({
                 //     status: "error",
                 //     msg: "Page not found",
@@ -142,16 +142,16 @@ class ProductsApiController {
     editOne = async (req, res) => {
         try {
             const prodId = req.params.pid;
-            const { title, description, price, thumbnail, code, stock } = req.body;
-            const updatedProduct = await productService.updateProduct({ _id: prodId, title, description, price, thumbnail, code, stock });
+            const { title, description, category, price, thumbnail, code, stock } = req.body;
+            const updatedProduct = await productService.updateProduct({ _id: prodId, title, description, category, price, thumbnail, code, stock });
 
             if (updatedProduct.matchedCount) {
                 return res.status(201).json({
                     status: "success",
-                    msg: "user updated",
+                    msg: "Product updated",
                     payload: {
                         _id: prodId,
-                        modified: [{ title, description, price, thumbnail, code, stock }]
+                        modified: [{ title, description, category, price, thumbnail, code, stock }]
                     }
                 });
             }

@@ -1,0 +1,381 @@
+paths:
+  /api/carts:
+    post:
+      summary: Creates a cart in the database
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: Cart created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/Success"
+  /api/carts/{cid}:
+    get:
+      summary: Retrieves one cart
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: ID of the desired cart
+          example: 64d5ea1526aaab587ac5f2d7
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: Cart found
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/Cart"
+        "500":
+          description: Unexpected error.
+    put:
+      summary: Updates the products in the cart
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: ID of the cart that wants to be edited
+          schema:
+            $type: String
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/postProduct"
+      responses:
+        "200":
+          description: Cart updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/Success"
+        "500":
+          description: Unexpected error.
+    delete:
+      summary: Removes all the products from a cart
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: ID of the searched cart
+          example: 64c63f3e15b412b708d37184
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: The cart is now empty
+        "500":
+          description: Unexpected error.
+  /api/carts/{cid}/products/{pid}:
+    post:
+      summary: Adds one product in a cart
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: ID of the desired cart
+          example: 64d5ea1526aaab587ac5f2d7
+          schema:
+            $type: String
+        - name: pid
+          in: path
+          required: true
+          description: ID of the desired product
+          example: 64c63f3e15b412b708d37184
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: Product added
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/Success"
+        "500":
+          description: Unexpected error.
+    put:
+      summary: Updates the quantity of a particular products in a cart
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: ID of the cart that wants to be edited
+          schema:
+            $type: String
+        - name: pid
+          in: path
+          required: true
+          description: ID of the product that wants to be edited
+          schema:
+            $type: String            
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/postQuantity"
+      responses:
+        "200":
+          description: Cart updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/Success"
+        "500":
+          description: Unexpected error.
+    delete:
+      summary: Removes one product from a cart
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: ID of the cart that wants to be edited
+          schema:
+            $type: String
+        - name: pid
+          in: path
+          required: true
+          description: ID of the product that wants to be edited
+          schema:
+            $type: String 
+      responses:
+        "200":
+          description: The product has been removed from the cart
+        "500":
+          description: Unexpected error
+components:
+  schemas:
+    Success:
+      type: object
+      properties:
+        status:
+          type: String
+          description: success or error
+        message:
+          type: String
+          description: details of the response
+      example:
+        status: Success
+        message: Cart created
+        payload: []
+    User:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: ID auto generado by mongo
+        first_name:
+          type: String
+          description: Primer nombre
+        last_name:
+          type: String
+          description: Apellido
+        email:
+          type: String
+          description: Email de usuario
+        password:
+          type: String
+          description: Password hasheado del user
+      example:
+        _id: ObjectId("644081a93f0625dc193bc594")
+        first_name: Adrian
+        last_name: Campo
+        email: atrian@gmail.com
+        password: $2b$10$Cf.uErjQ/lEzypTNfyE1IuFGxVXSRqGzjFWBYwL9KLK4Fe29kvu.e
+    Product:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: ID auto generado by mongo
+        title:
+          type: String
+          description: Name of the product
+        code:
+          type: String
+          description: Code of the product
+        description:
+          type: String
+          description: Description of the product
+        category:
+          type: String
+          description: Category of the product
+        price:
+          type: number
+          description: Price of the product in ARS
+        stock:
+          type: number
+          description: Current stock available for purchase
+        thumbnail:
+          type: String
+          description: URL of the image for the thumbnail
+        owner:
+          type: String
+          description: Email of the creator of the post/article
+      example:
+          _id: 64c63f3e15b412b708d371a2
+          title: Handcrafted Bronze Hat
+          description: Andy shoes are designed to keeping in mind durability as well as trends, the most stylish range of shoes & sandals
+          category: Shoes
+          code: 381311fc-9d6b-409e-a341-d342e2655a8c
+          price: 1288
+          stock: 2
+          thumbnail: https://loremflickr.com/640/480/food?lock=8819420459696128
+          owner: fernando@fernando.com
+    ProductsPaginated:
+      type: object
+      properties:
+        status:
+          type: String
+          description: result of the request
+        message:
+          type: String
+          description: description of the request
+        payload:
+          type: Array
+          description: Array with the products
+        totalPages:
+          type: number
+          description: Total number of pages
+        prevPage:
+          type: number
+          description: Previous page
+        nextPage:
+          type: number
+          description: Next page
+        page:
+          type: number
+          description: Current page
+        hasPrevPage:
+          type: boolean
+          description: Shows whether there is a previous page or not
+        hasNextPage:
+          type: boolean
+          description: Shows whether there is a next page or not
+        prevLink:
+          type: string
+          description: If there is a previous page, it returns the URL for that page
+        nextLink:
+          type: string
+          description: If there is a next page, it returns the URL for that page
+      example:
+        status: success
+        message: list of products
+        payload: [
+                  {
+                    "owner": "admin",
+                    "_id": "64c63f3e15b412b708d371a2",
+                    "title": "Handcrafted Bronze Hat",
+                    "description": "Andy shoes are designed to keeping in mind durability as well as trends, the most stylish range of shoes & sandals",
+                    "category": "Shoes",
+                    "code": "281311fc-9d6b-409e-a341-d342e2655a8c",
+                    "price": 1288,
+                    "stock": 2,
+                    "thumbnail": "https://loremflickr.com/640/480/food?lock=8819420459696128",
+                  },
+                  {
+                    "owner": "admin",
+                    "_id": "64c63f3f15b412b708d37209",
+                    "title": "Incredible Bronze Gloves",
+                    "description": "Andy shoes are designed to keeping in mind durability as well as trends, the most stylish range of shoes & sandals",
+                    "category": "Shoes",
+                    "code": "7a8ceedb-88d4-41c4-824c-7f7b3be47611",
+                    "price": 1421,
+                    "stock": 8,
+                    "thumbnail": "https://loremflickr.com/640/480/food?lock=1534882148777984"
+                  }
+                  ]
+        totalPages: 2
+        prevPage: null
+        nextPage: 2
+        page: 1
+        hasPrevPage: false
+        hasNextPage: true
+        prevLink: ""
+        nextLink: /api/products?page=2&limit=10&sort=1&category=Shoes&available=true
+    Cart:
+      type: object
+      properties:
+        products:
+          type: Array
+          description: Array with the products in the cart
+        totalItems:
+          type: Number
+          description: Total number of items in the cart
+        totalPrice:
+          type: Number
+          description: Total price of all the products in the cart
+        prodInStock:
+          type: Number
+          description: Number of products in stock
+      example:
+        products: []
+        totalItems: 0
+        totalPrice: 0
+        prodInStock: 0
+
+  requestBodies:
+    postQuantity:
+      type: object
+      properties:
+        quantity:
+          type: number
+          description: Number of products in the cart
+          required: true
+      example:
+        quantity: 2
+    postProduct:
+      type: object
+      properties:
+        title:
+          type: String
+          description: Title of the product
+          required: true
+        description:
+          type: String
+          description: Description of the product
+          required: true
+        category:
+          type: String
+          description: Category of the product
+          required: true
+        price:
+          type: number
+          description: Price of the product in ARS
+          required: true
+        thumbnail:
+          type: String
+          description: URL for the thumbnail of the product
+          required: true
+        code:
+          type: String
+          description: code of the product
+          required: true
+        stock:
+          type: String
+          description: stock of the product
+          required: true
+      example:
+        title: Incredible Bronze Gloves
+        description: Andy shoes are designed to keeping in mind durability as well as trends, the most stylish range of shoes & sandals
+        category: Shoes
+        price: 1632
+        thumbnail: https://loremflickr.com/640/480/food?lock=1534882148777984
+        code: 7a8ceedb-88d4-41c4-824c-7f7b3be47611
+        stock: 25

@@ -23,6 +23,8 @@ import { connectSocketServer } from './utils/socketServer.js';
 import compression from "express-compression";
 import errorHandler from "./middlewares/error.js";
 import { logger, addLogger } from './utils/logger.js';
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUiExpress from "swagger-ui-express";
 
 const app = express();
 const port = env.port;
@@ -51,6 +53,20 @@ const httpServer = app.listen(port, () => {
 })
 
 connectSocketServer(httpServer);
+
+//Swagger
+const swaggerOptions = {
+  definition: {
+      openapi: "3.0.1",
+      info: {
+          title: "E-commerce application",
+          description: "This in an e-commerce app",
+      },
+  },
+  apis: [`${__dirname}/docs/**/*.yaml`],
+};
+const specs = swaggerJSDoc(swaggerOptions);
+app.use("/apidocs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
 
 //CONFIG EXPRESS
 app.use(express.json());

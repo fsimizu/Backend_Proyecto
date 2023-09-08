@@ -72,7 +72,7 @@ class ProductService {
     async updateProduct ( { _id, title, description, price, thumbnail, code, stock } ) {
         try {
             const status = stock > 0 ? true : false;
-            return await productModel.updateProduct({ _id, title, description, price, thumbnail, code, stock, status })
+            return await productModel.updateProduct({ _id, title, description, category, price, thumbnail, code, stock, status })
         } catch (e) {
             logger.error("Error in the service in the updateProduct function. " + e);
             throw new Error (e);

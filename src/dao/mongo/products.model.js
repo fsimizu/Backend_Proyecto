@@ -22,6 +22,7 @@ export default class ProductModel {
                 code: true,
                 stock: true,
                 status: true,
+                owner: true,
             }
         )
     }
@@ -44,10 +45,10 @@ export default class ProductModel {
         return ProductsMongooseModel.deleteOne({_id: _id});
     }
 
-    updateProduct ( { _id, title, description, price, thumbnail, code, stock, status } ) {
+    updateProduct ( { _id, title, description, category, price, thumbnail, code, stock, status } ) {
         return ProductsMongooseModel.updateOne(
             { _id: _id },
-            { title, description, price, thumbnail, code, stock, status }
+            { title, description, category, price, thumbnail, code, stock, status }
         );
     }
 

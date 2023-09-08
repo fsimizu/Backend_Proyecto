@@ -1,0 +1,328 @@
+paths:
+  /api/products:
+    get:
+      summary: Retrieves all products paginated
+      tags:
+        - Products
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          description: Maximum number of products shown per page
+          example: 10
+          schema:
+            $type: number
+        - name: sort
+          in: query
+          required: false
+          description: Defines whether to sort in ascending or descending order
+          example: 1
+          schema:
+            $type: number
+        - name: page
+          in: query
+          required: false
+          description: Defines the page to be shown
+          example: 1
+          schema:
+            $type: number
+        - name: category
+          in: query
+          required: false
+          description: Filters the results by the category of the products
+          example: Shoes
+          schema:
+            $type: String
+        - name: available
+          in: query
+          required: false
+          description: Filters the results by the availability of the products
+          example: true
+          schema:
+            $type: Boolean
+      responses:
+        "200":
+          description: The products were returned successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/ProductsPaginated"
+        "500":
+          description: Unexpected error.
+    post:
+      summary: Creates a product in the database
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/postProduct"
+      responses:
+        "200":
+          description: Product created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/Success"
+  /api/products/{pid}:
+    get:
+      summary: Retrieves one product
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: ID of the desired product
+          example: 64c63f3e15b412b708d37184
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: Product found
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/Product"
+        "500":
+          description: Unexpected error.
+    put:
+      summary: Updates one product
+      tags:
+        - Products
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          description: ID of the user that wants to be edited
+          schema:
+            $type: String
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/postProduct"
+      responses:
+        "200":
+          description: Product updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/Success"
+        "500":
+          description: Unexpected error.
+
+    delete:
+      summary: Retrieves one product
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: ID of the desired product
+          example: 64c63f3e15b412b708d37184
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: Product deleted
+        "500":
+          description: Unexpected error.
+
+components:
+  schemas:
+    Success:
+      type: object
+      properties:
+        status:
+          type: String
+          description: success or error
+        message:
+          type: String
+          description: details of the response
+      example:
+        status: Success
+        message: Product created
+        payload: []
+    User:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: ID auto generado by mongo
+        first_name:
+          type: String
+          description: Primer nombre
+        last_name:
+          type: String
+          description: Apellido
+        email:
+          type: String
+          description: Email de usuario
+        password:
+          type: String
+          description: Password hasheado del user
+      example:
+        _id: ObjectId("644081a93f0625dc193bc594")
+        first_name: Adrian
+        last_name: Campo
+        email: atrian@gmail.com
+        password: $2b$10$Cf.uErjQ/lEzypTNfyE1IuFGxVXSRqGzjFWBYwL9KLK4Fe29kvu.e
+    Product:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: ID auto generado by mongo
+        title:
+          type: String
+          description: Name of the product
+        code:
+          type: String
+          description: Code of the product
+        description:
+          type: String
+          description: Description of the product
+        category:
+          type: String
+          description: Category of the product
+        price:
+          type: number
+          description: Price of the product in ARS
+        stock:
+          type: number
+          description: Current stock available for purchase
+        thumbnail:
+          type: String
+          description: URL of the image for the thumbnail
+        owner:
+          type: String
+          description: Email of the creator of the post/article
+      example:
+          _id: 64c63f3e15b412b708d371a2
+          title: Handcrafted Bronze Hat
+          description: Andy shoes are designed to keeping in mind durability as well as trends, the most stylish range of shoes & sandals
+          category: Shoes
+          code: 381311fc-9d6b-409e-a341-d342e2655a8c
+          price: 1288
+          stock: 2
+          thumbnail: https://loremflickr.com/640/480/food?lock=8819420459696128
+          owner: fernando@fernando.com
+    ProductsPaginated:
+      type: object
+      properties:
+        status:
+          type: String
+          description: result of the request
+        message:
+          type: String
+          description: description of the request
+        payload:
+          type: Array
+          description: Array with the products
+        totalPages:
+          type: number
+          description: Total number of pages
+        prevPage:
+          type: number
+          description: Previous page
+        nextPage:
+          type: number
+          description: Next page
+        page:
+          type: number
+          description: Current page
+        hasPrevPage:
+          type: boolean
+          description: Shows whether there is a previous page or not
+        hasNextPage:
+          type: boolean
+          description: Shows whether there is a next page or not
+        prevLink:
+          type: string
+          description: If there is a previous page, it returns the URL for that page
+        nextLink:
+          type: string
+          description: If there is a next page, it returns the URL for that page
+      example:
+        status: success
+        message: list of products
+        payload: [
+                  {
+                    "owner": "admin",
+                    "_id": "64c63f3e15b412b708d371a2",
+                    "title": "Handcrafted Bronze Hat",
+                    "description": "Andy shoes are designed to keeping in mind durability as well as trends, the most stylish range of shoes & sandals",
+                    "category": "Shoes",
+                    "code": "281311fc-9d6b-409e-a341-d342e2655a8c",
+                    "price": 1288,
+                    "stock": 2,
+                    "thumbnail": "https://loremflickr.com/640/480/food?lock=8819420459696128",
+                  },
+                  {
+                    "owner": "admin",
+                    "_id": "64c63f3f15b412b708d37209",
+                    "title": "Incredible Bronze Gloves",
+                    "description": "Andy shoes are designed to keeping in mind durability as well as trends, the most stylish range of shoes & sandals",
+                    "category": "Shoes",
+                    "code": "7a8ceedb-88d4-41c4-824c-7f7b3be47611",
+                    "price": 1421,
+                    "stock": 8,
+                    "thumbnail": "https://loremflickr.com/640/480/food?lock=1534882148777984"
+                  }
+                  ]
+        totalPages: 2
+        prevPage: null
+        nextPage: 2
+        page: 1
+        hasPrevPage: false
+        hasNextPage: true
+        prevLink: ""
+        nextLink: /api/products?page=2&limit=10&sort=1&category=Shoes&available=true
+
+  requestBodies:
+    postProduct:
+      type: object
+      properties:
+        title:
+          type: String
+          description: Title of the product
+          required: true
+        description:
+          type: String
+          description: Description of the product
+          required: true
+        category:
+          type: String
+          description: Category of the product
+          required: true
+        price:
+          type: number
+          description: Price of the product in ARS
+          required: true
+        thumbnail:
+          type: String
+          description: URL for the thumbnail of the product
+          required: true
+        code:
+          type: String
+          description: code of the product
+          required: true
+        stock:
+          type: String
+          description: stock of the product
+          required: true
+      example:
+        title: Incredible Bronze Gloves
+        description: Andy shoes are designed to keeping in mind durability as well as trends, the most stylish range of shoes & sandals
+        category: Shoes
+        price: 1632
+        thumbnail: https://loremflickr.com/640/480/food?lock=1534882148777984
+        code: 7a8ceedb-88d4-41c4-824c-7f7b3be47611
+        stock: 25
