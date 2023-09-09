@@ -103,6 +103,17 @@ iniPassport();
 app.use(passport.initialize());
 app.use(passport.session());
 
+
+//MULTERRRRR - Falla el uploader!
+import { uploader } from './utils/multer.js';
+app.post("/upload", uploader.single("file"),
+(req,res) =>  {res.send("ok")} )
+// uploader.single("file"), (req,res)=>{
+//   res.send("ok")
+// })
+
+
+
 //CONFIG RUTAS API
 app.use("/api/products", productsApiRouter);
 app.use("/api/carts", cartsApiRouter);

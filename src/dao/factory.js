@@ -29,8 +29,6 @@ switch (config.persistence) {
     const { default: TokenMongo } = await import('./mongo/token.model.js');
     TokenModel = TokenMongo;
 
-
-
     break;
     
   case 'MEMORY':

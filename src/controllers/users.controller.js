@@ -4,6 +4,8 @@ import EErros from "../services/errors/enums.js";
 import { generateUserErrorInfo } from "../services/errors/info.js";
 import { logger } from "../utils/logger.js";
 
+import { uploader } from "../utils/multer.js";
+
 class UserController {
 
     getAll = async (_, res) => {
@@ -135,6 +137,34 @@ class UserController {
         }
     }
 
+    uploadFile = async (req, res) => {
+        try {
+            console.log('ferrrr');
+            if (!req.file) {
+                return res.status(400).json({
+                    status: "error",
+                    msg: "No file uploaded",
+                    payload: {},
+                });
+            }
+            const { _id } = req.params;
+            
+            console.log(req.file);
+            
+            return res.status(200).json({
+                status: "success",
+                msg: "user deleted",
+                payload: {_id},
+            });
+        } catch (e) {
+            logger.error(e);
+            return res.status(500).json({
+                status: "error",
+                msg: "something went wrong :(",
+                payload: {},
+            });
+        }
+    }
 
     switchRole = async (req, res) => {
         try {

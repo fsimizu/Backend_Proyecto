@@ -6,15 +6,15 @@ const transport = nodemailer.createTransport({
     service: "gmail",
     port: 587,
     auth: {
-      user: process.env.GOOGLE_EMAIL,
-      pass: process.env.GOOGLE_PASS,
+      user: env.googleEmail,
+      pass: env.googlePass,
     },
   });
 
 
 export async function registerEmail({ recipient }) {
     const result = await transport.sendMail({
-        from: process.env.GOOGLE_EMAIL,
+        from: env.googleEmail,
         to: recipient,
         subject: "Welcome to Precinct",
         html: `
@@ -31,7 +31,7 @@ export async function registerEmail({ recipient }) {
 
 export async function orderEmail({ recipient, order }) {
     const result = await transport.sendMail({
-        from: process.env.GOOGLE_EMAIL,
+        from: env.googleEmail,
         to: recipient,
         subject: `Order ${order}`,
         html: `
@@ -47,7 +47,7 @@ export async function orderEmail({ recipient, order }) {
 
 export async function recoverEmail({ recipient, token }) {
     const result = await transport.sendMail({
-        from: process.env.GOOGLE_EMAIL,
+        from: env.googleEmail,
         to: recipient,
         subject: `Password recovery`,
         html: `
@@ -74,13 +74,13 @@ export async function recoverEmail({ recipient, token }) {
 import twilio from "twilio";
 
 const client = twilio(
-    process.env.TWILIO_ACCOUNT_SID,
-    process.env.TWILIO_AUTH_TOKEN
+    env.twilioAccount,
+    env.twilioToken
 );
 
 export async function sendSms() {
     const result = await client.messages.create({
-        from: process.env.TWILIO_PHONE_NUMBER,
+        from: env.twilioPhone,
         to: "+61434830695",
         body: "que onda che",
     });
