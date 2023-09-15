@@ -8,7 +8,7 @@ class UserService {
     async getUsers() {
         return await userModel.getUsers();
     };
-    
+
     async getUserByEmail(email) {
         try {
             return await userModel.getUserByEmail(email)
@@ -35,6 +35,16 @@ class UserService {
 
     async deleteUsers(_id) {
         return await userModel.deleteUsers(_id);
+    }
+
+    async updateLastConnection({ _id }) {
+        try {
+            return await userModel.updateLastConnection({ _id });
+        } catch (error) {
+            logger.error(e);
+            throw new Error('Error updating last connection. ' + e)
+        }
+        
     }
 
     async switchRole(_id) {

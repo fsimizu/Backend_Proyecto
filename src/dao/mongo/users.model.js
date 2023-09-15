@@ -8,7 +8,9 @@ export default class UserModel {
         _id: true,
         firstName: true,
         lastName: true,
-        email: true
+        email: true,
+        lastConnection: true,
+        role: true,
       }
     );
   }
@@ -23,7 +25,7 @@ export default class UserModel {
         role: true,
         password: true,
         cart: true,
-      
+
       });
   }
 
@@ -43,9 +45,6 @@ export default class UserModel {
   }
 
   updatePassword({ email, password }) {
-
-    console.log('en el modelo ', email, password);
-    
     return UserMongooseModel.updateOne(
       { email: email },
       { password }
@@ -60,6 +59,10 @@ export default class UserModel {
     return UserMongooseModel.findByIdAndUpdate(userId, cartId, { new: true });
   }
 
+  updateLastConnection({_id}) {
+    const lastConnection = new Date();
+    return UserMongooseModel.findByIdAndUpdate({ _id }, { lastConnection }, { new: true });
+  }
 
 }
 

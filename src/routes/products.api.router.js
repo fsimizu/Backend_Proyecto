@@ -5,6 +5,6 @@ export const productsApiRouter = express.Router();
 
 productsApiRouter.get('/', /*isAdmin,*/ productsApiController.getAll)
 productsApiRouter.post('/', canCreate, productsApiController.postOne);
-productsApiRouter.get('/:pid', /*isAdmin,*/ productsApiController.getOne)
+productsApiRouter.get('/:pid', productsApiController.getOne)
 productsApiRouter.put('/:pid', isAdmin, productsApiController.editOne);
 productsApiRouter.delete('/:pid', canCreate, productsApiController.deleteOne);

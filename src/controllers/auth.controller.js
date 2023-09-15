@@ -15,17 +15,10 @@ class AuthController {
         if (!req.user) {
             return res.status(400).render('error', { code: 400, msg: "The user already exists in our database" });
         }
-        req.session.user = {
-            _id: req.user._id,
-            email: req.user.email,
-            firstName: req.user.firstName,
-            isAdmin: req.user.isAdmin,
-            cart: req.user.cart,
-            role: req.user.role,
-        };
-        await emailService.register({ email: req.user.email });
+        req.session.user = req.user;
+        // await emailService.register({ email: req.user.email });
 
-        return res.redirect('/products');
+        return res.status(200).redirect('/products');
     }
 
     getFailRegister = async (_, res) => {
@@ -35,14 +28,14 @@ class AuthController {
     }
 
     postLogin = async (req, res) => {
-
         if (!req.user) {
             return res
                 .status(400)
                 .render('error', { code: 400, msg: "Invalid credentials" })
-        } //no llega nunca a esta linea
-
+        }
         req.session.user = req.user;
+        await userService.updateLastConnection(req.user._id);
+
         return res.redirect('/products');
     }
 

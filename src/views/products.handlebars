@@ -3,46 +3,75 @@
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col-12">
         <div class="card card-registration card-registration-2" style="border-radius: 15px;">
+          
+          {{!-- NAVBAR --}}
+          <nav class="navbar navbar-expand-lg navbar-light bg-light" style="border-radius: 15px;">
+            <a class="navbar-brand" href="#">E-Commerce</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    Products
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="/products">All products</a>
+                    {{#if canCreate}}
+                    <a class="dropdown-item" href="/products/add">Create a product</a>
+                    {{/if}}
+                  </div>
+                </li>
+
+                <li>
+                  <a class="nav-link" onclick="myCart('{{cart}}')" id="cart_icon">
+                    My cart
+                    {{!-- <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                      class="bi bi-cart" viewBox="0 0 16 16">
+                      <path
+                        d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+                    </svg> --}}
+                  </a>
+                </li>
+
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    Users
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="/users/myProfile">My profile</a>
+                    {{#if isAdmin }}
+                    <a class="dropdown-item" href="/users">All users</a>
+                    {{/if}}
+                    <a class="dropdown-item" href="/logout">Sign out</a>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </nav>
+          {{!-- NAVBAR --}}
+
+
           <div class="card-body p-0">
             <div class="row g-0">
-
               <div class="p-5">
 
                 <a href="/chat" class="chat_button">
                   <i class="material-icons" style="font-size:48px">chat</i>
                 </a>
 
-                {{#if firstName}}
-                <h1 class="fw-bold mb-0 text-black">Hi {{firstName}}!</h1>
-                <form id="products__logout-btn" action="/logout" method="get">
-                  <span><em>You are signed in as {{email}} with a role {{role}}</em></span>
-                  <button type="submit" class="btn btn-primary">Logout</button>
-                </form>
-                {{else}}
-                <h1 class="fw-bold mb-0 text-black">Hi there!</h1>
-                <p><em>You are not signed in</em></p>
-                {{/if}}
+                <h1 style="display: inline" class="fw-bold mb-0 text-black">Hi {{firstName}}!</h1>
+                
+                {{!-- OJO aca falta el condicional para que solo se muestre si el usuario es premium --}}
+                <span class="badge bg-primary" style="display: inline">Premium</span>
 
+                <div><span><em>You are signed in as {{email}} with a role {{role}}</em></span></div>
 
-                {{#if canCreate}}
-                <div>
-                  <form id="products__create-btn" action="/products/add" method="get">
-                    <button type="submit" class="btn btn-secondary">Create a product</button>
-                  </form>
-                  </br>
-                </div>
-                {{/if}}
-
-
-                <div class="d-flex justify-content-between align-items-center mb-5">
-                  <h2 class="fw-bold mb-0 text-black">List of products</h2>
-                  <a class="text-body" onclick="myCart('{{cart}}')" id="cart_icon"><svg
-                      xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-cart"
-                      viewBox="0 0 16 16">
-                      <path
-                        d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
-                    </svg></a>
-                </div>
+                <br><br>
 
 
 
@@ -81,13 +110,13 @@
                   {{#each products}}
                   <div class="card" style="width: 16rem;">
 
-                      {{#if ../isAdmin }}
-                      <a class="btn btn-secondary btn-editProduct" href="./products/edit/{{this._id}}">Edit/Delete</a>
-                      {{else}}
-                        {{#if this.isOwnProduct }}
-                        <a class="btn btn-secondary btn-editProduct" href="./products/edit/{{this._id}}">Edit/Delete</a>
-                        {{/if}}
-                      {{/if}}
+                    {{#if ../isAdmin }}
+                    <a class="btn btn-secondary btn-editProduct" href="./edit/{{this._id}}">Edit/Delete</a>
+                    {{else}}
+                    {{#if this.isOwnProduct }}
+                    <a class="btn btn-secondary btn-editProduct" href="./edit/{{this._id}}">Edit/Delete</a>
+                    {{/if}}
+                    {{/if}}
 
                     <img src="{{this.thumbnail}}" class="card-img-top" alt="">
 
@@ -100,11 +129,11 @@
                       <a class="btn btn-primary btn-addToCart"
                         onclick="addProductToCart('{{this._id}}', '{{../cart}}')">Add to Cart</a>
                       {{else}}
-                        {{#if this.isOwnProduct }}
-                        {{else}}
-                        <a class="btn btn-primary btn-addToCart"
-                          onclick="addProductToCart('{{this._id}}', '{{../cart}}')">Add to Cart</a>
-                        {{/if}}
+                      {{#if this.isOwnProduct }}
+                      {{else}}
+                      <a class="btn btn-primary btn-addToCart"
+                        onclick="addProductToCart('{{this._id}}', '{{../cart}}')">Add to Cart</a>
+                      {{/if}}
                       {{/if}}
 
 
@@ -143,5 +172,11 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
   integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+  integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+  integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+  integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/js/products.js"></script>

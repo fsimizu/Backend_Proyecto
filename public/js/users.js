@@ -1,7 +1,7 @@
-const removeProduct = (prodId) => {
+const removeUser = (userId) => {
     Swal.fire({
         title: 'Are you sure?',
-        text: 'You are about to permanently delete this product',
+        text: 'You are about to permanently delete this user',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -9,7 +9,7 @@ const removeProduct = (prodId) => {
         confirmButtonText: 'Yes, remove!'
     }).then((result) => {
         if (result.isConfirmed) {
-            fetch(`/api/products/${prodId}`, {
+            fetch(`/api/users/${userId}`, {
                 method: 'DELETE',
                 headers: { 'Content-Type': 'application/json' },
             })
@@ -22,7 +22,7 @@ const removeProduct = (prodId) => {
                     )
                         .then((result) => {
                             if (result.isConfirmed) {
-                                location.href = "/products"
+                                location.href = "/users"
                             }
                         })
                         ;

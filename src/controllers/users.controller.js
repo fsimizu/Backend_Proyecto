@@ -138,9 +138,14 @@ class UserController {
     }
 
     uploadFile = async (req, res) => {
+        
+//Crear un endpoint en el router de usuarios api/users/:uid/documents con el método POST 
+// que permita subir uno o múltiples archivos. Utilizar el middleware de Multer para poder recibir 
+// los documentos que se carguen y actualizar en el usuario su status para hacer saber que 
+// ya subió algún documento en particular.
+
         try {
-            console.log('ferrrr');
-            if (!req.file) {
+            if (!req.files) {
                 return res.status(400).json({
                     status: "error",
                     msg: "No file uploaded",
@@ -149,13 +154,14 @@ class UserController {
             }
             const { _id } = req.params;
             
-            console.log(req.file);
+            console.log(req.files);
             
             return res.status(200).json({
                 status: "success",
                 msg: "user deleted",
-                payload: {_id},
+                payload: {},
             });
+
         } catch (e) {
             logger.error(e);
             return res.status(500).json({
@@ -187,6 +193,21 @@ class UserController {
                 errorCause: e.cause,
             });
         }
+    }
+
+    viewOne = async (req, res) => {
+        const { _id } = req.params;
+        const user = await userService.getUserById(_id);
+        return res
+                .status(201)
+                .render('users-edit', {user});
+    }
+
+    viewAll = async (req, res) => {
+        const users = await userService.getUsers();
+        return res
+                .status(201)
+                .render('users-all', {users});
     }
 
 }

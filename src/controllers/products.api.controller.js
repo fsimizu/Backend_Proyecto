@@ -92,10 +92,11 @@ class ProductsApiController {
                     payload: {},
                 });
             }
-            const prodCreated = await productService.createProducts({ title, description, category, price, thumbnail, code, stock });
+            const prodCreated = await productService.createProducts({ title, description, category, price, thumbnail, code, stock, email });
+                       
             return res.status(201).json({
-                status: "success",
-                msg: "product created",
+                status: "Success",
+                msg: "Product created",
                 payload: {
                     _id: prodCreated._id,
                     title: prodCreated.title,

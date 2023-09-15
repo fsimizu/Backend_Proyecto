@@ -17,6 +17,7 @@ import { loginRouter } from './routes/login.router.js';
 import { productsApiRouter } from './routes/products.api.router.js';
 import { productsRouter } from './routes/products.router.js';
 import { usersApiRouter } from './routes/users.api.router.js';
+import { usersRouter } from './routes/users.router.js';
 import { viewsRouter } from './routes/views.router.js';
 // import { connectMongo } from './utils/dbConnection.js';
 import { connectSocketServer } from './utils/socketServer.js';
@@ -103,17 +104,6 @@ iniPassport();
 app.use(passport.initialize());
 app.use(passport.session());
 
-
-//MULTERRRRR - Falla el uploader!
-import { uploader } from './utils/multer.js';
-app.post("/upload", uploader.single("file"),
-(req,res) =>  {res.send("ok")} )
-// uploader.single("file"), (req,res)=>{
-//   res.send("ok")
-// })
-
-
-
 //CONFIG RUTAS API
 app.use("/api/products", productsApiRouter);
 app.use("/api/carts", cartsApiRouter);
@@ -124,6 +114,7 @@ app.use("/api/sessions", loginRouter);
 app.use("/", viewsRouter);
 app.use("/products", productsRouter);
 app.use("/carts", cartsRouter);
+app.use("/users", usersRouter);
 app.use("/chat", chatRouter);
 app.use("/auth", authRouter);
 

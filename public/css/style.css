@@ -2,6 +2,11 @@ body {
     background-color: #cedde2;
 }
 
+.navbar {
+    padding-left: 48px;
+    padding-right: 48px;
+}
+
 .products__container {
     display: flex;
     flex-wrap: wrap;
@@ -143,3 +148,4 @@ body {
     left: 10px;
     top: 10px;
 }
+
