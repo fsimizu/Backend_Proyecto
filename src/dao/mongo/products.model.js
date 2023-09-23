@@ -1,4 +1,5 @@
 import { ProductsMongooseModel } from "./mongoose/products.mongoose.js";
+import mongoose from "mongoose";
 import { logger } from "../../utils/logger.js";
 
 export default class ProductModel {
@@ -12,6 +13,11 @@ export default class ProductModel {
     };
 
     async getProductById( { _id } ) {
+
+        if (!mongoose.Types.ObjectId.isValid(_id)) {
+            throw new Error ("Id not valid");
+        };
+        
         return await ProductsMongooseModel.findOne({ _id },
             {
                 title: true,

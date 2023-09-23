@@ -30,3 +30,28 @@ const removeProduct = (prodId) => {
         }
     })
 }
+
+const addProductPhoto = (prodId) => {
+    const formData = new FormData();
+    formData.append('products', document.querySelector('#photo').files[0]);
+
+    fetch(`/api/products/${prodId}/photo`, {
+        method: 'POST',
+        body: formData,
+    })
+        .then(response => response.json())
+        .then(data => {
+            Swal.fire(
+                {
+                    position: 'top-end',
+                    icon: 'success',
+                    title: data.msg,
+                    showConfirmButton: false,
+                    timer: 1000
+                }
+            )
+        })
+        .then(setTimeout(() => { location.reload() }, 1500))
+
+
+}

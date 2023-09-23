@@ -84,8 +84,8 @@ class UserController {
                 const userUpdated = await userService.updateUsers({ _id: _id, firstName, lastName, email });
                 if (userUpdated.matchedCount) {
                     return res.status(201).json({
-                        status: "success",
-                        msg: "user updated",
+                        status: "Success",
+                        msg: "User updated",
                         payload: {
                             _id: _id,
                             firstName: firstName,
@@ -138,37 +138,47 @@ class UserController {
     }
 
     uploadFile = async (req, res) => {
-        
-//Crear un endpoint en el router de usuarios api/users/:uid/documents con el método POST 
-// que permita subir uno o múltiples archivos. Utilizar el middleware de Multer para poder recibir 
-// los documentos que se carguen y actualizar en el usuario su status para hacer saber que 
-// ya subió algún documento en particular.
-
         try {
             if (!req.files) {
                 return res.status(400).json({
-                    status: "error",
+                    status: "Error",
                     msg: "No file uploaded",
                     payload: {},
                 });
             }
-            const { _id } = req.params;
-            
-            console.log(req.files);
-            
             return res.status(200).json({
-                status: "success",
-                msg: "user deleted",
+                status: "Success",
+                msg: "Photo updated",
                 payload: {},
             });
-
         } catch (e) {
             logger.error(e);
             return res.status(500).json({
-                status: "error",
-                msg: "something went wrong :(",
+                status: "Error",
+                msg: "Something went wrong :(",
                 payload: {},
             });
+        }
+    }
+
+    uploadDocument = async (req, res) => {
+        try {
+            const {_id} = req.params
+            const document = {
+                name: req.files[0].filename,
+                reference: req.files[0].path
+            }
+
+            if (req.files.length < 1) {
+                throw new Error ("No files selected")
+            }
+
+            const user = await userService.uploadDocument({_id, document});
+            return res.status(200).redirect(`/users/${_id}`);
+
+        } catch (e) {
+            logger.error(e);
+            return res.status(500).render('error', { code: 500, msg: e })
         }
     }
 
@@ -176,10 +186,15 @@ class UserController {
         try {
             const { _id } = req.params;
             const { role } = await userService.switchRole(_id);
+            
+            if (req.session.user._id === _id) {
+                req.session.user.role = role;
+            }
+            console.log("es mi usuario? ",req.session.user._id === _id);
 
             return res.status(200).json({
-                status: "success",
-                msg: `user ${_id} has now a role ${role}`,
+                status: "Success",
+                msg: `The user has now a role ${role}`,
                 payload: {},
             });
 
@@ -197,18 +212,38 @@ class UserController {
 
     viewOne = async (req, res) => {
         const { _id } = req.params;
+        const { isAdmin } = req.session.user;
         const user = await userService.getUserById(_id);
+
         return res
                 .status(201)
-                .render('users-edit', {user});
+                .render('users-edit', {user, isAdmin});
     }
 
     viewAll = async (req, res) => {
         const users = await userService.getUsers();
+        const { cart, _id } = req.session.user;
         return res
                 .status(201)
-                .render('users-all', {users});
+                .render('users-all', {users, _id, cart });
     }
+
+    viewProfile = async (req, res) => {
+        const { _id } = req.params;
+        const user = await userService.getUserById(_id);
+        return res
+                .status(201)
+                .render('users-profile', {user});
+    }
+
+    viewDocuments = async (req, res) => {
+        const { _id } = req.params;
+        const user = await userService.getUserById(_id);
+        return res
+                .status(201)
+                .render('users-documents', {user});
+    }
+
 
 }
 

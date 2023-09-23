@@ -5,7 +5,7 @@ class ProductsController {
     getAll = async (req, res) => {
         try {
             const { limit, sort, page = 1, category, available } = req.query;
-            const { firstName, email, role, cart, isAdmin } = req.session.user;
+            const { _id, firstName, email, role, cart, isAdmin } = req.session.user;
             const productsPaginated = await productService.getProducts({ limit, sort, page, category, available, email });
             const categories = await productService.getCategories();
 
@@ -24,6 +24,7 @@ class ProductsController {
                     prevLink: productsPaginated.prevLink,
                     nextLink: productsPaginated.nextLink,
                     categories,
+                    _id,
                     firstName,
                     email,
                     role,
@@ -80,8 +81,8 @@ class ProductsController {
     editOne = async (req, res) => {
         try {
             const prodId = req.params.pid;
-            const { title, description, price, thumbnail, code, stock } = req.body;
-            const updatedProduct = await productService.updateProduct({ _id: prodId, title, description, price, thumbnail, code, stock });
+            const { title, description, category, price, thumbnail, code, stock } = req.body;
+            const updatedProduct = await productService.updateProduct({ _id: prodId, title, description, category, price, thumbnail, code, stock });
 
             if (updatedProduct.matchedCount) {
                 return res.status(201).redirect('/products');
@@ -95,6 +96,18 @@ class ProductsController {
             return res.status(500).render('error', { code: 500, msg: e })
         }
     }
+
+    addPhoto = async (req, res) => {
+        try {
+            const prodId = req.params.pid;
+            return res.status(200).render('product-photo', {prodId})
+
+        } catch (e) {
+            logger.error("Error in the controller when editing a product. " + e);
+            return res.status(500).render('error', { code: 500, msg: e })
+        }
+    }
+
     }
 
 

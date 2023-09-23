@@ -3,10 +3,10 @@
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col-12">
         <div class="card card-registration card-registration-2" style="border-radius: 15px;">
-          
+
           {{!-- NAVBAR --}}
           <nav class="navbar navbar-expand-lg navbar-light bg-light" style="border-radius: 15px;">
-            <a class="navbar-brand" href="#">E-Commerce</a>
+            <a class="navbar-brand"><img src="/images/logo2.png" alt="logo" style="height:60px"></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
               aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
@@ -28,7 +28,7 @@
 
                 <li>
                   <a class="nav-link" onclick="myCart('{{cart}}')" id="cart_icon">
-                    My cart
+                    My Cart
                     {{!-- <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
                       class="bi bi-cart" viewBox="0 0 16 16">
                       <path
@@ -43,7 +43,7 @@
                     Users
                   </a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="/users/myProfile">My profile</a>
+                    <a class="dropdown-item" href="/users/{{_id}}">My profile</a>
                     {{#if isAdmin }}
                     <a class="dropdown-item" href="/users">All users</a>
                     {{/if}}
@@ -65,15 +65,12 @@
                 </a>
 
                 <h1 style="display: inline" class="fw-bold mb-0 text-black">Hi {{firstName}}!</h1>
-                
-                {{!-- OJO aca falta el condicional para que solo se muestre si el usuario es premium --}}
+
+                {{#if canCreate}}
                 <span class="badge bg-primary" style="display: inline">Premium</span>
-
-                <div><span><em>You are signed in as {{email}} with a role {{role}}</em></span></div>
-
+                {{/if}}
+                {{!-- <div><span><em>You are signed in as {{email}} with a role {{role}}</em></span></div> --}}
                 <br><br>
-
-
 
                 {{!-- <h3 class="mb-0 text-black" id="category_title">Category</h3> --}}
                 <div class="d-flex justify-content-between align-items-center mb-5">
@@ -117,9 +114,8 @@
                     <a class="btn btn-secondary btn-editProduct" href="./edit/{{this._id}}">Edit/Delete</a>
                     {{/if}}
                     {{/if}}
-
-                    <img src="{{this.thumbnail}}" class="card-img-top" alt="">
-
+                    <img src="{{this.thumbnail}}" class="card-img-top"
+                      onerror="this.src='/products/fallback-product.jpg'">
                     <div class="card-body">
                       <h4 class="card-title">ARS$ {{this.price}}</h4>
                       <h5 class="card-title">{{this.title}}</h5>

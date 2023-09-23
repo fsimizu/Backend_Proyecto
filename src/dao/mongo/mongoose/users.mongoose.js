@@ -19,6 +19,7 @@ const userSchema = new Schema({
     default: [],
   },
   lastConnection: { type: Date, default: new Date() },
+  verified: { type: Boolean, required: false, default: false },
 });
 
 

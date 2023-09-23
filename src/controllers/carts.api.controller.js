@@ -44,7 +44,7 @@ class CartsApiController {
     postOne = async (req, res) => {
         try {
             const { cid: cartId, pid: prodId } = req.params;
-            await cartService.updateCart(cartId, prodId);
+            const searchedCart = await cartService.updateCart(cartId, prodId);          
             return res.status(200).json({
                 status: "success",
                 msg: "Product added",

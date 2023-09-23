@@ -3,25 +3,6 @@ const socket = io();
 const chatBox = document.getElementById("input-msg");
 let userEmail = document.getElementById("user").innerHTML;
 
-// async function emailInput() {
-//   const { value: email } = await Swal.fire({
-//     title: "Who are you?",
-//     input: "text",
-//     inputLabel: "Please enter your email",
-//     inputValue: "",
-//     showCancelButton: false,
-//     allowOutsideClick: false,
-//     inputValidator: (value) => {
-//       if (!value) {
-//         return "You need to write something!";
-//       }
-//     },
-//   });
-//   userEmail = email;
-// }
-// emailInput();
-
-
 chatBox.addEventListener("keyup", ({ key }) => {
   if (key == "Enter") {
     socket.emit("msg_front_to_back", {

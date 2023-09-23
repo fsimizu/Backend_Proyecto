@@ -138,7 +138,7 @@ app.use("/mockingproducts", (req, res) => {
 );
 
 //ERROR HANDLER
-app.use(errorHandler);
+// app.use(errorHandler);
 
 app.use("*", (_,res) => {
   return res.status(404).render('error', {code: 404, msg: "Site not found."})

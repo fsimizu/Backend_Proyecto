@@ -1,10 +1,14 @@
 <div class="home__container">
     <div class="home__form-container">
+        <div style="text-align:end">
+            <a href="/products" style="text-decoration: none;">&#10006;</a>
+        </div>
         <h3 class="home__title">{{header}}</h3>
         <form action="/products" method="post">
             <div class="form-group">
                 <label for="registerEmail">Title</label>
-                <input type="text" class="form-control" id="title" name="title" placeholder="Title" required value="{{title}}">
+                <input type="text" class="form-control" id="title" name="title" placeholder="Title" required
+                    value="{{title}}">
             </div>
             <div class="form-group">
                 <label for="registerName">Description</label>
@@ -13,31 +17,33 @@
             </div>
             <div class="form-group">
                 <label for="registerLastName">Code</label>
-                <input type="text" class="form-control" id="code" name="code" placeholder="Code" required value="{{code}}">
+                <input type="text" class="form-control" id="code" name="code" placeholder="Code" required
+                    value="{{code}}">
             </div>
             <div class="form-group">
                 <label for="registerLastName">Category</label>
-                <input type="text" class="form-control" id="category" name="category" placeholder="Category" required value="{{category}}">
+                <input type="text" class="form-control" id="category" name="category" placeholder="Category" required
+                    value="{{category}}">
             </div>
             <div class="form-group">
                 <label for="registerAge">Price</label>
-                <input type="number" class="form-control" id="price" name="price" placeholder="Price" required value="{{price}}">
+                <input type="number" class="form-control" id="price" name="price" placeholder="Price" required
+                    value="{{price}}">
             </div>
 
             <div class="form-group">
                 <label for="stock">Initial Stock</label>
-                <input type="number" class="form-control" id="stock" name="stock" placeholder="Stock" required value="{{stock}}">
+                <input type="number" class="form-control" id="stock" name="stock" placeholder="Stock" required
+                    value="{{stock}}">
             </div>
             <div class="form-group">
                 <label for="thumbnail">Thumbnail URL</label>
-                <input type="text" class="form-control" id="thumbnail" name="thumbnail" placeholder="Thumbnail"
-                    required value="{{thumbnail}}">
+                <input type="text" class="form-control" id="thumbnail" name="thumbnail" placeholder="Thumbnail" required
+                    value="{{thumbnail}}">
                 <div><em><strong>*All fields are mandatory</strong></em></div>
             </div>
 
             <button type="submit" class="btn btn-primary">Save</button>
         </form>
-        <br>
-        <a href="/products"><button class="btn btn-secondary">Go back</button></a>
     </div>
 </div>

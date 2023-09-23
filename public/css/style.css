@@ -149,3 +149,27 @@ body {
     top: 10px;
 }
 
+.containerProfile {
+    text-align: center;
+    height: 200px;
+
+}
+.containerProfilePhoto {
+    margin: auto;
+    height:100%;
+    width: 200px;
+    border-radius: 50%;
+    background-color: lightgray;
+    overflow: hidden;
+    /* background image: imagen generica de un usuario */
+
+}
+.profilePhoto {
+    height: 100%;
+}
+.productImg {
+    height: 200px;
+}
+.productImgContainer {
+    text-align: center;
+}

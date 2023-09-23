@@ -5,7 +5,7 @@ import { logger } from "../utils/logger.js";
 
 class ProductsApiController {
     getAll = async (req, res) => {
-        
+
         try {
             const { limit, sort, page, category, available } = req.query;
             const products = await productService.getProducts({ limit, sort, page, category, available });
@@ -17,19 +17,19 @@ class ProductsApiController {
             const nextLink = products.hasNextPage ? "/api/products?page=" + products.nextPage + limitLink + sortLink + categoryLink + availableLink : "";
 
             if (products.page > products.totalPages) {
-                
+
                 CustomError.createError({
                     name: "Page not found",
                     cause: "The page in the param is greater than the total number of pages",
                     message: "The page requested does not exist",
                     code: EErros.INVALID_TYPES_ERROR,
                 });
-            
+
                 // return res.status(404).json({
                 //     status: "error",
                 //     msg: "Page not found",
                 //     payload: {},
-            //     });
+                //     });
             }
 
             return res.status(200).json({
@@ -70,7 +70,7 @@ class ProductsApiController {
                 payload: searchedProducts
             });
 
-        } catch (error) {
+        } catch (e) {
             req.logger.error(e);
             return res.status(500).json({
                 status: "error",
@@ -84,7 +84,7 @@ class ProductsApiController {
         try {
             const { title, description, category, price, thumbnail, code, stock } = req.body;
             const { email } = req.session.user;
-            if (!title || !description || !category || !price || !thumbnail || !code || !stock ) {
+            if (!title || !description || !category || !price || !thumbnail || !code || !stock) {
                 logger.warn("validation error: all fields are mandatory");
                 return res.status(400).json({
                     status: "error",
@@ -93,7 +93,7 @@ class ProductsApiController {
                 });
             }
             const prodCreated = await productService.createProducts({ title, description, category, price, thumbnail, code, stock, email });
-                       
+
             return res.status(201).json({
                 status: "Success",
                 msg: "Product created",
@@ -166,6 +166,46 @@ class ProductsApiController {
             });
         }
     }
+
+    uploadPhoto = async (req, res) => {
+        try {
+            const prodId = req.params.pid;
+            const searchedProducts = await productService.getProductById({ prodId });
+
+            if (!req.files) {
+                return res.status(400).json({
+                    status: "Error",
+                    msg: "No file uploaded",
+                    payload: {},
+                });
+            }
+
+            if (!searchedProducts) {
+                return res.status(400).json({
+                    status: "Error",
+                    msg: "Incorrect product ID",
+                    payload: {},
+                });
+            }
+
+            return res.status(200).json({
+                status: "Success",
+                msg: "Photo updated",
+                payload: {},
+            });
+        } catch (e) {
+            logger.error(e);
+            return res.status(500).json({
+                status: "Error",
+                msg: "Something went wrong :(" + e,
+                payload: {},
+            });
+        }
+
+    }
+
 }
+
+
 
 export const productsApiController = new ProductsApiController();

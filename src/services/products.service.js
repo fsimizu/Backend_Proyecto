@@ -18,14 +18,14 @@ class ProductService {
             const categoryLink = category ? "&category=" + category : "";
             const availableLink = available ? "&available=" + available : "";
             const productsPaginated = await productModel.getProducts({ queryLimit, queryPage, sort, filter });
-            
+
             const prevLink = productsPaginated.hasPrevPage ? "/products?page=" + productsPaginated.prevPage + limitLink + sortLink + categoryLink + availableLink : "";
             const nextLink = productsPaginated.hasNextPage ? "/products?page=" + productsPaginated.nextPage + limitLink + sortLink + categoryLink + availableLink : "";
             productsPaginated.prevLink = prevLink;
             productsPaginated.nextLink = nextLink;
 
-            productsPaginated.docs.forEach( obj => {
-                if ( obj.owner === email ) {
+            productsPaginated.docs.forEach(obj => {
+                if (obj.owner === email) {
                     obj.isOwnProduct = true
                 }
                 else {
@@ -43,11 +43,11 @@ class ProductService {
 
     async getProductById({ prodId }) {
         try {
-            return await productModel.getProductById({ _id: prodId }
-            )
+            return await productModel.getProductById({ _id: prodId });
         }
         catch (err) {
-            throw new Error("Internal server error");
+            logger.error('Error in the product service. ' + err);
+            throw new Error('Error in the product service. ' + err);
         }
     };
 
@@ -61,23 +61,23 @@ class ProductService {
         }
     }
 
-    async deleteProduct({prodId}) {
+    async deleteProduct({ prodId }) {
         try {
-            return await productModel.deleteProduct({_id : prodId});
+            return await productModel.deleteProduct({ _id: prodId });
         } catch (e) {
             throw new Error("Internal server error." + e);
         }
     }
-    
-    async updateProduct ( { _id, title, description, price, thumbnail, code, stock } ) {
+
+    async updateProduct({ _id, title, description, category, price, thumbnail, code, stock }) {
         try {
             const status = stock > 0 ? true : false;
             return await productModel.updateProduct({ _id, title, description, category, price, thumbnail, code, stock, status })
         } catch (e) {
             logger.error("Error in the service in the updateProduct function. " + e);
-            throw new Error (e);
+            throw new Error(e);
         }
-        
+
     }
 
     async getCategories() {

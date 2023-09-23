@@ -11,6 +11,7 @@ export default class UserModel {
         email: true,
         lastConnection: true,
         role: true,
+        cart: true,
       }
     );
   }

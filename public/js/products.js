@@ -23,11 +23,11 @@ const myCart = (cartId) => {
 
 
 const addProductToCart = (prodId, cartId) => {
-    fetch(`api/carts/${cartId}/product/${prodId}`, {
+    fetch(`/api/carts/${cartId}/product/${prodId}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
     })
-        .then(() => {
+        .then((result) => {
             Swal.fire({
                 title: 'The product has been added to the cart',
                 icon: 'success',
