@@ -1,5 +1,7 @@
 import { cartService } from "../services/carts.service.js";
 import { logger } from "../utils/logger.js";
+import CustomError from "../services/errors/custom-error.js";
+import Errors from "../services/errors/enums.js";
 
 class CartsController {
 
@@ -9,8 +11,13 @@ class CartsController {
       const { products, totalItems, totalPrice, prodInStock } = await cartService.getCart({ cartId });
       return res.status(201).render('carts', { products, totalItems, totalPrice, cartId, prodInStock });
     } catch (error) {
-      logger.error('Error calling the cartService. ' + error)
-      return res.status(500).render('error', {code: 500, msg: "Error retrieving the cart"}); 
+      logger.error('Cart controller error. ' + error)
+      CustomError.createError({
+        name: "Unexpected error",
+        cause: error,
+        message: "Carts controller error in the getOne function.",
+        code: Errors.UNEXPECTED_ERROR,
+      });
     }
   }
 
@@ -20,12 +27,15 @@ class CartsController {
       const response = await cartService.updateCart(cartId, prodId);
       return res.status(200).json(response);
     } catch (error) {
-      return res.status(500).render('error', {code: 500, msg: "Error posting the cart"});
+      logger.error('Cart controller error. ' + error)      
+      CustomError.createError({
+        name: "Unexpected error",
+        cause: error,
+        message: "Carts controller error in the postOne function.",
+        code: Errors.UNEXPECTED_ERROR,
+      });
     }
   }
-
 }
-
-
 
 export const cartsController = new CartsController();

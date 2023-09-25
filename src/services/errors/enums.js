@@ -1,4 +1,4 @@
-const EErros = {
+const Errors = {
     ROUTING_ERROR: 1,
     INVALID_TYPES_ERROR: 2,
     DATABASE_ERROR: 3,
@@ -6,6 +6,7 @@ const EErros = {
     FORBIDDEN_ERROR: 5,
     MONGO_SCHEMA_VALIDATION: 6,
     PAGE_NOT_FOUND: 7,
+    UNEXPECTED_ERROR: 8,
   };
   
-  export default EErros;
+  export default Errors;

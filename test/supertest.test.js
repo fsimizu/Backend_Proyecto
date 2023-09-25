@@ -72,6 +72,7 @@ describe('Testing APIs', () => {
     })
 
     describe('Testing the SESSION endpoint', () => {
+        //estaria bien probar login con diferentes roles y verificar que puedan acceder a los que les corresponde.
         let cookieName;
         let cookieValue;
         const mockUser = {

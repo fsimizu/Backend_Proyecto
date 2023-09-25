@@ -2,7 +2,7 @@ import EErros from "../services/errors/enums.js";
 import { logger } from "../utils/logger.js";
 
 export default (error, req, res, next) => {
-    logger.debug(error.cause)
+    logger.debug("Middleware error logger: " + error.cause )
 
     switch (error.code) {
         case EErros.INVALID_TYPES_ERROR:
@@ -16,7 +16,6 @@ export default (error, req, res, next) => {
                 .status(400)
                 .send({ status: "error", error: error.name, cause: error.cause });
             break;
-
 
         case EErros.FAIL_LOGIN_AUTH:
             res
@@ -33,12 +32,16 @@ export default (error, req, res, next) => {
                 .status(404)
                 .send({ status: "error", error: error.name, cause: error.cause });
             break;
-
+        case EErros.UNEXPECTED_ERROR:
+            res
+                .status(500)
+                .render('error', { code: 500, msg: `${error.name}. ${error.cause}`});
+            break;
 
         default:
             res
                 .status(500)
-                .send({ status: "error", error: "Unhandled server error" });
+                .render('error', { code: 500, msg: "Error retrieving the cart" })
             break;
     }
 };

@@ -26,6 +26,7 @@ import errorHandler from "./middlewares/error.js";
 import { logger, addLogger } from './utils/logger.js';
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUiExpress from "swagger-ui-express";
+import "express-async-errors";
 
 const app = express();
 const port = env.port;
@@ -138,7 +139,7 @@ app.use("/mockingproducts", (req, res) => {
 );
 
 //ERROR HANDLER
-// app.use(errorHandler);
+app.use(errorHandler);
 
 app.use("*", (_,res) => {
   return res.status(404).render('error', {code: 404, msg: "Site not found."})
