@@ -1,7 +1,3 @@
-import { userService } from "../services/users.service.js";
-import { productService } from "../services/products.service.js";
-
-
 export function isUser(req, res, next) {
     if (req.session.user) {
         return next();

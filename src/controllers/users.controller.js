@@ -3,17 +3,18 @@ import EErros from "../services/errors/enums.js";
 import { generateUserErrorInfo } from "../services/errors/info.js";
 import { userService } from "../services/users.service.js";
 import { logger } from "../utils/logger.js";
+import { GetUsersDTO } from "../dao/DTO/users.dto.js";
 
 class UserController {
 
     getAll = async (_, res) => {
         try {
             const users = await userService.getUsers();
-
+            const filteredUsers = new GetUsersDTO(users)
             return res.status(200).json({
-                status: "success",
-                msg: "listado de usuarios",
-                payload: users,
+                status: "Success",
+                msg: "List of users",
+                payload: filteredUsers,
             });
         } catch (e) {
             logger.error(e);
@@ -188,7 +189,6 @@ class UserController {
             if (req.session.user._id === _id) {
                 req.session.user.role = role;
             }
-            console.log("es mi usuario? ",req.session.user._id === _id);
 
             return res.status(200).json({
                 status: "Success",
@@ -242,6 +242,33 @@ class UserController {
                 .render('users-documents', {user});
     }
 
+    deleteInactiveUsers = async (req, res) => {
+        try {
+            const inactiveUsers = await userService.deleteInactiveUsers();
+            
+            if (inactiveUsers.deletedCount > 0) {
+                return res.status(200).json({
+                    status: "Success",
+                    msg: `${inactiveUsers.deletedCount} user(s) deleted.`,
+                    payload: {},
+                });
+            }
+            else {
+                return res.status(200).json({
+                    status: "Success",
+                    msg: "No users deleted. All users are active.",
+                    payload: {},
+                });
+            }
+        } catch (e) {
+            logger.error(e);
+            return res.status(500).json({
+                status: "Unexpected error",
+                msg: "Error deleting inactive users",
+                payload: {},
+            });
+        }
+    }
 
 }
 

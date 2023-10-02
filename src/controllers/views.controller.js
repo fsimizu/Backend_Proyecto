@@ -29,7 +29,6 @@ class ViewsController {
     
     getChange = (req, res) => {
         const { code, email } = req.params;
-        console.log(code, email);
         return res.status(201).render('pass-change');
     };
     

@@ -1,6 +1,7 @@
 // import { productModel } from "../dao/mongo/products.model.js";
 import { ProductModel } from '../dao/factory.js';
 import { logger } from "../utils/logger.js";
+import { emailService } from "../services/email.service.js";
 
 const productModel = new ProductModel()
 
@@ -63,6 +64,10 @@ class ProductService {
 
     async deleteProduct({ prodId }) {
         try {
+            const {code, title, owner} = await productModel.getProductById({ _id: prodId });
+            if (owner != 'admin') { 
+                emailService.deleteProduct({ owner, title, code });  
+            }
             return await productModel.deleteProduct({ _id: prodId });
         } catch (e) {
             throw new Error("Internal server error." + e);

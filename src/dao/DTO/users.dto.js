@@ -1,4 +1,4 @@
-export default class UserDTO {
+export class UserDTO {
     constructor(session) {
         this.cookie = session.cookie;
         this.user = {
@@ -9,4 +9,20 @@ export default class UserDTO {
             cart: session.user?.cart,
         }
     }
-  }
+}
+
+export class GetUsersDTO {
+    constructor(users) {
+        this.users = users.map((user) => {
+            return {
+                _id: user._id,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                email: user.email,
+                lastConnection: user.lastConnection,
+                cart: user.cart,
+                role: user.role,
+            };
+        });
+    }
+}

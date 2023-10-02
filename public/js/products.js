@@ -1,26 +1,6 @@
-// let cartId = localStorage.getItem('cartId')
-
 const myCart = (cartId) => {
     window.location.href = `/carts/${cartId}`
 }
-
-// if (!localStorage.getItem('cartId')) {
-//     fetch('/api/carts', {
-//         method: 'POST',
-//         headers: {
-//                    'Content-Type': 'application/json'
-//         },
-//     })
-//     .then(response => response.json())
-//     .then(data => {
-//         cartId = data.payload._id;
-//         localStorage.setItem('cartId', cartId);
-//     })
-//     .catch(error => {
-//         console.error('Error:', error);
-//     });
-//     }
-
 
 const addProductToCart = (prodId, cartId) => {
     fetch(`/api/carts/${cartId}/product/${prodId}`, {
@@ -92,7 +72,6 @@ const updateQuery = (key, value) => {
         return newUri + separator + key + "=" + value;
     }
 }
-
 
 const clearQuery = (uri, key) => {
     const separator = window.location.href.indexOf('?') !== -1 ? "&" : "?";
@@ -182,8 +161,6 @@ function buyNow(cartId) {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                         })
-
-
 
                         setTimeout(() => window.location.href = '/products'
                             , 1500);

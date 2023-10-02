@@ -1,7 +1,6 @@
 const API_URL = 'http://localhost:8080/api';
 
 function handleLogin() {
-// alert('login')
 
 fetch( API_URL + '/jwt-login', {
     method: 'post',
@@ -13,7 +12,6 @@ fetch( API_URL + '/jwt-login', {
     console.log(json.payload);
     // localStorage.setItem('token', json.payload)
 });
-
 }
 
 function handleFetchProfile() {

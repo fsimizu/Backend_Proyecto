@@ -92,7 +92,6 @@ const uploadProfile = (userId) => {
 
 
 const switchPremium = (userId) => {
-
     Swal.fire({
         title: 'Are you sure?',
         icon: 'warning',
@@ -124,4 +123,37 @@ const switchPremium = (userId) => {
     })
 
 
+}
+
+const removeInactiveUsers = () => {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: 'You are about to permanently delete all inactive users',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch(`/api/users/`, {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+            })
+                .then(response => response.json())
+                .then(data => {
+                    Swal.fire(
+                        data.status,
+                        data.msg,
+                        'Success'
+                    )
+                        .then((result) => {
+                            if (result.isConfirmed) {
+                                location.href = `users`
+                            }
+                        })
+                        ;
+                })
+        }
+    })
 }

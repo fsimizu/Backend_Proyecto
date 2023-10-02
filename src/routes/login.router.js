@@ -1,6 +1,6 @@
 import express from "express";
 import passport from 'passport';
-import UserDTO from '../dao/DTO/users.dto.js';
+import { UserDTO } from '../dao/DTO/users.dto.js';
 export const loginRouter = express.Router();
 
 loginRouter.get('/current', (req, res) => {

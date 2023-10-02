@@ -52,6 +52,4 @@ const addProductPhoto = (prodId) => {
             )
         })
         .then(setTimeout(() => { location.reload() }, 1500))
-
-
 }

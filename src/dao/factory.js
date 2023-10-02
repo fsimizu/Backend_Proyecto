@@ -14,8 +14,6 @@ switch (config.persistence) {
     logger.info('Persistence with Mongo');
     
     MongoSingleton.getInstance()
-    // connectMongo();
-
     const { default: ProductsMongo } = await import('./mongo/products.model.js');
     ProductModel = ProductsMongo;
     const { default: CartsMongo } = await import('./mongo/carts.model.js');

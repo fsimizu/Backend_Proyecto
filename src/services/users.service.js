@@ -66,7 +66,6 @@ class UserService {
             logger.error(e);
             throw new Error('Error updating last connection. ' + e)
         }
-
     }
 
     async uploadDocument({ _id, document }) {
@@ -101,6 +100,17 @@ class UserService {
             await user.save();
             return user
         } catch (e) {
+            logger.error(e);
+            throw new Error('Error in the user service. ' + e)
+        }
+    }
+
+    async deleteInactiveUsers() {
+        try {
+            const hoursInactive = 2*24
+            const usersdeleted = await userModel.deleteInactiveUsers(hoursInactive);
+            return usersdeleted;
+        } catch (error) {
             logger.error(e);
             throw new Error('Error in the user service. ' + e)
         }

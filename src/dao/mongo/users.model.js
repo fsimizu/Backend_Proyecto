@@ -12,6 +12,7 @@ export default class UserModel {
         lastConnection: true,
         role: true,
         cart: true,
+        verified: true,
       }
     );
   }
@@ -26,7 +27,6 @@ export default class UserModel {
         role: true,
         password: true,
         cart: true,
-
       });
   }
 
@@ -63,6 +63,10 @@ export default class UserModel {
   updateLastConnection({_id}) {
     const lastConnection = new Date();
     return UserMongooseModel.findByIdAndUpdate({ _id }, { lastConnection }, { new: true });
+  }
+
+  deleteInactiveUsers(hoursInactive) {
+    return UserMongooseModel.deleteMany({ lastConnection: { $lt: new Date(Date.now() - hoursInactive * 1000 * 60 * 60) } });
   }
 
 }

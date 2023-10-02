@@ -36,8 +36,6 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 
-
-
 export const addLogger = (req, res, next) => {
     req.logger = logger;
     /* req.logger.info(
@@ -50,3 +48,11 @@ export const addLogger = (req, res, next) => {
     `${req.method} on ${req.url} - ${new Date().toLocaleTimeString()}`
   ); */
 
+export const loggerTest = (req, res) => {
+    req.logger.silly("log de un silly");
+    req.logger.debug("log de un debug");
+    req.logger.info("log de una info");
+    req.logger.warn("log de una warn");
+    req.logger.error("log de una error");
+    return res.json("testing")
+}

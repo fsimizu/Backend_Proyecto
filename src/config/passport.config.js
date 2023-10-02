@@ -1,14 +1,13 @@
 import fetch from 'node-fetch';
 import passport from 'passport';
 import GitHubStrategy from 'passport-github2';
-import local from 'passport-local';
-import { createHash, isValidPassword } from '../utils/passEncryption.js';
-// import jwt from 'jsonwebtoken';
 import jwt from 'passport-jwt';
+import local from 'passport-local';
 import { cartService } from '../services/carts.service.js';
 import { userService } from '../services/users.service.js';
-import env from './environment.config.js';
 import { logger } from '../utils/logger.js';
+import { createHash, isValidPassword } from '../utils/passEncryption.js';
+import env from './environment.config.js';
 
 const JWTStrategy = jwt.Strategy;
 const ExtractJWT = jwt.ExtractJwt;
@@ -39,7 +38,7 @@ export function iniPassport() {
                     logger.warn('Invalid Password');
                     return done(null, false);
                 }
-                delete user.password; //verificar que esta borrando el password - no lo esta borrando
+                delete user.password;
                 return done(null, user);
             } catch (err) {
                 logger.error(err);
@@ -99,11 +98,10 @@ export function iniPassport() {
             {
                 clientID: 'Iv1.9a387c7c1e7858a0',
                 clientSecret: env.githubSecret,
-                callbackURL: `http://localhost:${port}/api/sessions/githubcallback`,
-                // callbackURL: `http://localhost:${port}/auth/githubcallback`,
+                // callbackURL: `http://localhost:${port}/api/sessions/githubcallback`,
+                callbackURL: `/api/sessions/githubcallback`,
             },
             async (accesToken, _, profile, done) => {
-                // console.log(profile);
                 try {
                     const res = await fetch('https://api.github.com/user/emails', {
                         headers: {
@@ -134,10 +132,14 @@ export function iniPassport() {
                         };
 
                         let userCreated = await userService.createUsers(newUser);
-                        logger.info('User Registration succesful')
+
+                        logger.info('User Registration succesful');
+                        await userService.updateLastConnection(userCreated._id);
+
                         return done(null, userCreated);
                     } else {
                         logger.info('User already exists');
+                        await userService.updateLastConnection(user._id);
                         return done(null, user);
                     }
                 } catch (e) {

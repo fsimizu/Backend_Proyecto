@@ -174,30 +174,6 @@ components:
         status: Success
         message: Cart created
         payload: []
-    User:
-      type: object
-      properties:
-        _id:
-          type: ObjectId
-          description: ID auto generado by mongo
-        first_name:
-          type: String
-          description: Primer nombre
-        last_name:
-          type: String
-          description: Apellido
-        email:
-          type: String
-          description: Email de usuario
-        password:
-          type: String
-          description: Password hasheado del user
-      example:
-        _id: ObjectId("644081a93f0625dc193bc594")
-        first_name: Adrian
-        last_name: Campo
-        email: atrian@gmail.com
-        password: $2b$10$Cf.uErjQ/lEzypTNfyE1IuFGxVXSRqGzjFWBYwL9KLK4Fe29kvu.e
     Product:
       type: object
       properties:

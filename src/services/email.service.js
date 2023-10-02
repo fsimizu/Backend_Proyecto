@@ -1,4 +1,4 @@
-import { registerEmail, orderEmail, recoverEmail } from "../utils/email.js"
+import { registerEmail, orderEmail, recoverEmail, deleteProduct } from "../utils/email.js"
 import { TokenModel } from '../dao/factory.js';
 import { randomBytes } from 'crypto';
 import { createHash } from '../utils/passEncryption.js';
@@ -16,6 +16,11 @@ class EmailService {
 
     async order({ email, order }) {
         const emailResponse = await orderEmail({ recipient: email, order });
+        return emailResponse
+    }
+
+    async deleteProduct({ owner, title, code }) {
+        const emailResponse = await deleteProduct({ recipient: owner, title, code });
         return emailResponse
     }
 

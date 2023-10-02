@@ -69,6 +69,22 @@ export async function recoverEmail({ recipient, token }) {
     return result
 }
 
+export async function deleteProduct({ recipient, title, code }) {
+    const result = await transport.sendMail({
+        from: env.googleEmail,
+        to: recipient,
+        subject: `Your product has been deleted`,
+        html: `
+                  <div>
+                      <h1>Product ${title} deleted</h1>
+                      <h3>The product <em>${code}</em> you had created has now been removed from our website.</h3>
+                      <p><em>Correo de pruebas para el curso de backend de Coderhouse.</em></p>
+                  </div>
+              `,
+    });
+    return result
+}
+
 
 //--------------------TWILIO----------------------------
 import twilio from "twilio";
