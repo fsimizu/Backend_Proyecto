@@ -1,6 +1,6 @@
 import express from "express";
 import { productsApiController } from '../controllers/products.api.controller.js';
-import { isAdmin, canCreate } from "../middlewares/auth.js";
+import { canCreate, isAdmin } from "../middlewares/auth.js";
 import { uploader } from "../utils/multer.js";
 export const productsApiRouter = express.Router();
 

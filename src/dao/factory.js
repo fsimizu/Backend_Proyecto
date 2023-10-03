@@ -1,6 +1,6 @@
 import config from '../config/environment.config.js';
-import MongoSingleton from '../utils/mongoSingleton.js';
 import { logger } from '../utils/logger.js';
+import MongoSingleton from '../utils/mongoSingleton.js';
 
 export let ProductModel;
 export let CartModel;

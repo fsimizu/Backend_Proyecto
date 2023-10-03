@@ -1,6 +1,6 @@
 import { cartService } from "../services/carts.service.js";
-import { ticketService } from "../services/tickets.service.js";
 import { emailService } from "../services/email.service.js";
+import { ticketService } from "../services/tickets.service.js";
 
 class CartsApiController {
 

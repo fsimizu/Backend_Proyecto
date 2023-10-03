@@ -41,7 +41,7 @@ export default (error, req, res, next) => {
         default:
             res
                 .status(500)
-                .render('error', { code: 500, msg: "Error retrieving the cart" })
+                .render('error', { code: 500, msg: "Unknown error" })
             break;
     }
 };

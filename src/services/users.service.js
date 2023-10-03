@@ -1,4 +1,3 @@
-// import { userModel } from "../dao/mongo/users.model.js";
 import { UserModel } from '../dao/factory.js';
 import { logger } from "../utils/logger.js";
 

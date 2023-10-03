@@ -1,6 +1,6 @@
 import express from "express";
-import { isUser, isAdmin } from "../middlewares/auth.js";
 import { viewsController } from '../controllers/views.controller.js';
+import { isAdmin, isUser } from "../middlewares/auth.js";
 export const viewsRouter = express.Router();
 
 viewsRouter.get('/', viewsController.getHome);

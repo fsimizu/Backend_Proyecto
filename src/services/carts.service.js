@@ -1,6 +1,4 @@
-// import { CartModel } from "../dao/mongo/carts.model.js";
-import { CartModel } from '../dao/factory.js';
-import { ProductModel } from '../dao/factory.js';
+import { CartModel, ProductModel } from '../dao/factory.js';
 
 const cartModel = new CartModel()
 const productModel = new ProductModel()

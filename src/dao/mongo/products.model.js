@@ -1,6 +1,6 @@
-import { ProductsMongooseModel } from "./mongoose/products.mongoose.js";
 import mongoose from "mongoose";
 import { logger } from "../../utils/logger.js";
+import { ProductsMongooseModel } from "./mongoose/products.mongoose.js";
 
 export default class ProductModel {
 
@@ -57,8 +57,6 @@ export default class ProductModel {
             { title, description, category, price, thumbnail, code, stock, status }
         );
     }
-
 }
 
-//   export const productModel = new ProductModel();
   

@@ -1,6 +1,6 @@
 import express from "express";
 import { userController } from "../controllers/users.controller.js";
-import { isAdmin, canViewProfile } from "../middlewares/auth.js";
+import { canViewProfile, isAdmin } from "../middlewares/auth.js";
 export const usersRouter = express.Router();
 
 usersRouter.get("/", isAdmin, userController.viewAll);

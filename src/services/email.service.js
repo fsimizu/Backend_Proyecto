@@ -1,8 +1,7 @@
-import { registerEmail, orderEmail, recoverEmail, deleteProduct } from "../utils/email.js"
-import { TokenModel } from '../dao/factory.js';
 import { randomBytes } from 'crypto';
+import { TokenModel, UserModel } from '../dao/factory.js';
+import { deleteProduct, orderEmail, recoverEmail, registerEmail } from "../utils/email.js";
 import { createHash } from '../utils/passEncryption.js';
-import { UserModel } from "../dao/factory.js";
 
 const tokenModel = new TokenModel();
 const userModel = new UserModel();

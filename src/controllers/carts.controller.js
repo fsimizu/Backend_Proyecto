@@ -1,7 +1,7 @@
 import { cartService } from "../services/carts.service.js";
-import { logger } from "../utils/logger.js";
 import CustomError from "../services/errors/custom-error.js";
 import Errors from "../services/errors/enums.js";
+import { logger } from "../utils/logger.js";
 
 class CartsController {
 

@@ -8,7 +8,6 @@ const userModel = new UserModel();
 const expect = chai.expect;
 const testSession = session(app);
 
-
 //GRUPO DE TESTS. DESCRIPCION GENERAL.
 describe("Testing the User model", () => {
 
@@ -35,6 +34,4 @@ describe("Testing the User model", () => {
         const user = await userModel.deleteUsers({ _id })
         expect(user).to.be.an("object");
     });
-
-
 })

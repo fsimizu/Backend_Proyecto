@@ -1,6 +1,6 @@
 import express from "express";
 import { cartsApiController } from "../controllers/carts.api.controller.js";
-import { isUser, isOwnCart } from "../middlewares/auth.js";
+import { isOwnCart, isUser } from "../middlewares/auth.js";
 export const cartsApiRouter = express.Router();
 
 cartsApiRouter.post('/', cartsApiController.createOne);

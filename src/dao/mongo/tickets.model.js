@@ -10,6 +10,4 @@ export default class TicketModel {
     const lastOrder = await TicketsMongooseModel.findOne({}).sort('-code');
     return lastOrder?.code
   }
-
-
 }

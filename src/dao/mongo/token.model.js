@@ -11,5 +11,3 @@ export default class TokenModel {
   };
 
 }
-
-// export const cartModel = new CartModel();

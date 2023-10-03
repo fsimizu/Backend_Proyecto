@@ -1,6 +1,4 @@
-import { CartModel } from '../dao/factory.js';
-import { TicketModel } from '../dao/factory.js';
-import { UserModel } from '../dao/factory.js';
+import { CartModel, TicketModel, UserModel } from '../dao/factory.js';
 
 const ticketModel = new TicketModel();
 const cartModel = new CartModel();

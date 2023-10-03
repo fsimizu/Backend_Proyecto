@@ -9,5 +9,4 @@ export default class MessageModel {
   findAllMessages() {
     return MessageMongooseModel.find({})
   }
-  
 }

@@ -1,4 +1,3 @@
-
 class ViewsController {
     getHome = (_, res) => {
         return res.status(201).render('home');

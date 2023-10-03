@@ -1,7 +1,6 @@
-// import { productModel } from "../dao/mongo/products.model.js";
 import { ProductModel } from '../dao/factory.js';
-import { logger } from "../utils/logger.js";
 import { emailService } from "../services/email.service.js";
+import { logger } from "../utils/logger.js";
 
 const productModel = new ProductModel()
 
