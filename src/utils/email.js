@@ -56,10 +56,10 @@ export async function recoverEmail({ recipient, token }) {
                       <p>We received a request to reset the password for your account.</p>
                       <p>To reset your password, click on the button below</p>
 
-                      <a href="${env.apiUrl}/auth/pass-change?token=${token}&email=${recipient}"><button>Reset password</button></a>	
+                      <a href="${env.apiUrl}auth/pass-change?token=${token}&email=${recipient}"><button>Reset password</button></a>	
 
                       <p>or copy and paste the link below in your browser</p>
-                      <p>${env.apiUrl}/auth/pass-change?token=${token}&email=${recipient}</p>
+                      <p>${env.apiUrl}auth/pass-change?token=${token}&email=${recipient}</p>
 
                       <p>The link will expire in 1 hour.</p>
 
