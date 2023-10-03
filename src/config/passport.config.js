@@ -96,7 +96,7 @@ export function iniPassport() {
         'github',
         new GitHubStrategy(
             {
-                clientID: 'Iv1.9a387c7c1e7858a0',
+                clientID: env.githubClient,
                 clientSecret: env.githubSecret,
                 callbackURL: `/api/sessions/githubcallback`,
             },
