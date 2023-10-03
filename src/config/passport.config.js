@@ -98,7 +98,6 @@ export function iniPassport() {
             {
                 clientID: 'Iv1.9a387c7c1e7858a0',
                 clientSecret: env.githubSecret,
-                // callbackURL: `http://localhost:${port}/api/sessions/githubcallback`,
                 callbackURL: `/api/sessions/githubcallback`,
             },
             async (accesToken, _, profile, done) => {
@@ -110,6 +109,7 @@ export function iniPassport() {
                             'X-Github-Api-Version': '2022-11-28',
                         },
                     });
+
                     const emails = await res.json();
                     const emailDetail = emails.find((email) => email.verified == true);
                     if (!emailDetail) {
