@@ -55,7 +55,7 @@ const editUser = (userId, firstName, lastName, email) => {
                     )
                         .then((result) => {
                             if (result.isConfirmed) {
-                                location.href = "/users"
+                                location.href = "/products"
                             }
                         })
                         ;
