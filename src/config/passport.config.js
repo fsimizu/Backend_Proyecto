@@ -98,7 +98,7 @@ export function iniPassport() {
             {
                 clientID: env.githubClient,
                 clientSecret: env.githubSecret,
-                callbackURL: `/api/sessions/githubcallback`,
+                callbackURL: `${env.apiUrl}api/sessions/githubcallback`,
             },
             async (accesToken, _, profile, done) => {
                 try {

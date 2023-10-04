@@ -16,7 +16,7 @@ class AuthController {
             return res.status(400).render('error', { code: 400, msg: "The user already exists in our database" });
         }
         req.session.user = req.user;
-        // await emailService.register({ email: req.user.email });
+        await emailService.register({ email: req.user.email });
 
         return res.status(200).redirect('/products');
     }
